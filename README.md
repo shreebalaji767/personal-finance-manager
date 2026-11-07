@@ -8,6 +8,10 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 3. Save. The included workflow deploys the root of `main` automatically on each push.
 4. Wait for the Pages deployment. The site will be available at https://shreebalaji767.github.io/personal-finance-manager/
 
+## Branding and navigation
+
+The site opens on a dedicated landing page. Select **Open Ledger** to enter the finance workspace. The Ledger logo returns to the landing page. Workspace navigation uses the URL hash, so refreshing while inside a section reloads that same section; opening the site root starts at the landing page. The transparent SVG brand mark is used in the header, favicon and installable app icon. The install button uses the browser's native PWA install prompt when supported.
+
 ## First launch
 
 The app starts with a completely blank workspace. No accounts, transactions, budgets, goals, bills, assets, or family members are pre-created. Add only the records you want to track. Existing browser data is preserved when the app is updated.
