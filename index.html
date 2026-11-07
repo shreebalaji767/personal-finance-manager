@@ -54,7 +54,7 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function money(n,c='INR'){const cur=CURRENCIES[c]||CURRENCIES.INR;return cur.symbol+Number(n||0).toLocaleString('en-IN',{maximumFractionDigits:2})+' '+c}
 function convert(n,c,to=data.settings.base){if(c===to)return Number(n||0);const rates=data.settings.rates||{};if(!rates[c]||!rates[to])return null;return Number(n||0)*rates[c]/rates[to]}
 function baseTotal(items,field='amount'){return items.reduce((s,x)=>s+(convert(x[field],x.currency)||0),0)}
-function accountBalance(a){let n=Number(a.opening||0);data.transactions.forEach(t=>{if(t.account===a.id){if(t.type==='income')n+=t.amount;if(t.type==='expense')n-=t.amount}});return n}
+function accountBalance(a){let n=Number(a.opening||0);data.transactions.forEach(t=>{if(t.account===a.id){const amount=convert(t.amount,t.currency,a.currency);if(amount!==null){if(t.type==='income')n+=amount;if(t.type==='expense')n-=amount}}});return n}
 function monthExpenses(cat){return data.transactions.filter(t=>t.type==='expense'&&monthKey(t.date)===monthKey()&&(!cat||t.category===cat))}
 function monthIncome(){return data.transactions.filter(t=>t.type==='income'&&monthKey(t.date)===monthKey())}
 function fmt(n){return money(n,data.settings.base)}
