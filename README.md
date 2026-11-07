@@ -23,6 +23,14 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Offline app shell:** The service worker caches the app shell, manifest and logo so the interface can open offline after it has been loaded once. Offline availability depends on the browser retaining its cache; keep JSON backups of important records.
 
 
+## Search engine metadata
+
+- The page title, description, Open Graph metadata and social preview metadata identify the site as **blssnvj21**.
+- A canonical URL points search engines to the GitHub Pages home address.
+- Robots directives allow indexing and following links.
+- Schema.org WebApplication JSON-LD describes the app as a free personal finance web application.
+- Search engines choose their own display titles and snippets; metadata helps them understand the site but cannot guarantee exact wording or immediate indexing. Search results may take time to refresh after deployment.
+
 ## Quick Add and entering records
 
 - **Quick Add buttons:** The workspace top bar and floating **＋ Quick Add** button open the same menu from any workspace section.
