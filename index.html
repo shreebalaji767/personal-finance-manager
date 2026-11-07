@@ -13,7 +13,7 @@
 @media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.stat-value{font-size:18px}.stat-top{font-size:10px}.topbar{padding:0 11px}}
 
 /* Landing, brand and install experience */
-body.landing-mode .app{display:none}body.app-mode .landing-page{display:none}
+body.landing-mode .app{display:none}body.app-mode .landing-page{display:none}body.landing-mode .floating-quick-add{display:none}
 .brand.logo-home,.landing-brand{border:0;background:transparent;cursor:pointer}
 .brand.logo-home{display:flex;align-items:center;gap:11px;padding:0 12px 28px;font-size:19px;font-weight:750;color:#fff;letter-spacing:-.5px;text-align:left}
 .brand.logo-home img,.landing-brand img{display:block;object-fit:contain;background:transparent}
@@ -68,7 +68,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #8da2ff;outline-offset:3p
 </nav><div class="navlabel">Manage</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings & backup</button><button data-page="trash"><span class="ico">♲</span>Recycle bin</button></nav><div class="sidefoot">Private by design<br>All data stays on this device.</div></aside>
 <main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" id="menuBtn">☰</button><div class="crumb">Workspace <strong id="crumb">Overview</strong></div></div><div class="topactions"><span class="privacy">● LOCAL & PRIVATE</span><button class="btn small install-button" type="button">Install app</button><button class="btn small primary" id="quickAdd" type="button">＋ Quick Add</button><div class="avatar">L</div></div></header>
 <div class="content">
-<div class="quick-add-intro card" aria-label="Quick add shortcuts">
+<section class="section active" id="page-dashboard"><div class="quick-add-intro card" aria-label="Quick add shortcuts">
  <div class="cardhead"><div><h3>Quick Add</h3><p>Start with the item you want to record.</p></div><button class="btn small" type="button" onclick="openQuickAdd()">＋ All options</button></div>
  <div class="quick-shortcuts">
   <button class="quick-shortcut" type="button" onclick="openTx(null,'income')"><span class="quick-symbol income-symbol">↗</span><span><b>Add income</b><small>Money received</small></span></button>
@@ -76,8 +76,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #8da2ff;outline-offset:3p
   <button class="quick-shortcut" type="button" onclick="openTx(null,'transfer')"><span class="quick-symbol">⇄</span><span><b>Transfer</b><small>Move between accounts</small></span></button>
   <button class="quick-shortcut" type="button" onclick="openAccount()"><span class="quick-symbol">▣</span><span><b>New account</b><small>Cash, bank or wallet</small></span></button>
  </div>
-</div>
-<section class="section active" id="page-dashboard"><div class="pagehead"><div><h1>Good day 👋</h1><div class="sub">Here's your financial picture at a glance.</div></div><div class="actions"><select id="dashCurrency" aria-label="Display currency" class="btn"></select><button class="btn primary" onclick="openTx()">＋ New transaction</button></div></div>
+</div><div class="pagehead"><div><h1>Good day 👋</h1><div class="sub">Here's your financial picture at a glance.</div></div><div class="actions"><select id="dashCurrency" aria-label="Display currency" class="btn"></select><button class="btn primary" onclick="openTx()">＋ New transaction</button></div></div>
 <div class="grid stats" id="stats"></div><div class="grid two"><div class="card"><div class="cardhead"><div><h3>Cash flow</h3><p>Income vs expenses · last 6 months</p></div><span class="pill">Monthly</span></div><div class="reportchart" id="cashflow"></div></div><div class="card"><div class="cardhead"><div><h3>Spending breakdown</h3><p>Expenses by category · this month</p></div></div><div class="donutwrap"><div class="donut" id="donut"></div><div class="legend" id="legend"></div></div></div></div>
 <div class="grid two" style="margin-top:16px"><div class="card"><div class="cardhead"><div><h3>Recent transactions</h3><p>Your latest money movements</p></div><button class="btn small" onclick="go('transactions')">View all →</button></div><div class="tablewrap"><table><thead><tr><th>Description</th><th>Category</th><th>Date</th><th style="text-align:right">Amount</th></tr></thead><tbody id="recent"></tbody></table></div></div><div class="card"><div class="cardhead"><div><h3>Budget health</h3><p>How you're tracking this month</p></div><button class="btn small" onclick="go('budgets')">Manage</button></div><div id="budgetPreview"></div></div></div>
 </section>
