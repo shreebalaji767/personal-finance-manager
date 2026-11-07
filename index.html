@@ -11,15 +11,46 @@
 @media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two{grid-template-columns:1fr}.three{grid-template-columns:1fr 1fr}}
 @media(max-width:720px){.sidebar{width:0;padding:0;overflow:hidden;transition:.2s}.sidebar.open{width:260px;padding:20px 14px}.main{margin-left:0}.topbar{height:62px;padding:0 16px}.mobilemenu{display:inline-flex}.privacy{display:none}.content{padding:22px 15px 45px}.pagehead{align-items:flex-start}.pagehead h1{font-size:22px}.stats{gap:10px}.card{padding:15px}.stat-value{font-size:20px}.three{grid-template-columns:1fr}.barrow{grid-template-columns:85px 1fr 70px}.formgrid{grid-template-columns:1fr}.span2{grid-column:auto}.pagehead .actions .btn{padding:9px 10px}.donutwrap{flex-wrap:wrap}.modal{padding:18px}}
 @media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.stat-value{font-size:18px}.stat-top{font-size:10px}.topbar{padding:0 11px}}
+
+/* Landing, brand and install experience */
+body.landing-mode .app{display:none}body.app-mode .landing-page{display:none}
+.brand.logo-home,.landing-brand{border:0;background:transparent;cursor:pointer}
+.brand.logo-home{display:flex;align-items:center;gap:11px;padding:0 12px 28px;font-size:19px;font-weight:750;color:#fff;letter-spacing:-.5px;text-align:left}
+.brand.logo-home img,.landing-brand img{display:block;object-fit:contain;background:transparent}
+.landing-page{min-height:100svh;background:radial-gradient(ellipse at 78% 45%,#e8edff 0,transparent 34%),linear-gradient(135deg,#f8faff,#f0f4ff);display:flex;flex-direction:column;padding:0 clamp(18px,5vw,76px);color:#17233b}
+.landing-header{height:88px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e4e9f4}
+.landing-brand{display:flex;align-items:center;gap:12px;color:#17233b;font-size:23px;font-weight:800;letter-spacing:-1px}
+.brand-period{color:#4263eb}
+.landing-hero{width:min(1180px,100%);margin:auto;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(24px,6vw,90px);padding:70px 0 60px;flex:1}
+.hero-copy{max-width:580px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.7px;color:#4263eb}
+.hero-copy h1{font-size:clamp(48px,7vw,82px);line-height:.99;letter-spacing:-5px;margin:22px 0;color:#13213b}
+.hero-copy h1 span{color:#4263eb}.hero-copy p{max-width:510px;font-size:clamp(15px,1.6vw,18px);line-height:1.8;color:#64718a;margin:0 0 28px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.hero-start{padding:14px 22px;font-size:15px}
+.trustline{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;color:#64718a;font-size:12px}.trustline span:first-child{color:#168263}
+.hero-art{min-height:370px;position:relative;display:grid;place-items:center;isolation:isolate}
+.art-orbit{position:absolute;border:1px solid #cbd5f4;border-radius:50%;z-index:-1}.orbit-one{width:min(34vw,390px);aspect-ratio:1}.orbit-two{width:min(27vw,310px);aspect-ratio:1;border-style:dashed}
+.art-card{width:min(100%,390px);min-height:270px;background:#fff;border:1px solid #e0e6f2;border-radius:25px;box-shadow:0 28px 80px #233b7020;padding:27px;transform:rotate(-3deg)}
+.art-top{display:flex;align-items:center;gap:12px;color:#73809a;font-size:10px;font-weight:800;letter-spacing:1.3px}
+.art-line{height:1px;background:#edf0f6;margin:25px 0 20px}.art-label{font-size:19px;font-weight:750;letter-spacing:-.5px}
+.art-bars{height:105px;display:flex;align-items:end;gap:10px;margin-top:18px}.art-bars i{display:block;flex:1;border-radius:8px 8px 2px 2px;background:linear-gradient(180deg,#7e98ff,#4263eb)}
+.art-bars i:nth-child(1){height:34%}.art-bars i:nth-child(2){height:62%}.art-bars i:nth-child(3){height:48%}.art-bars i:nth-child(4){height:82%}.art-bars i:nth-child(5){height:57%}.art-bars i:nth-child(6){height:92%}.art-bars i:nth-child(7){height:70%}
+.art-foot{display:flex;justify-content:space-between;margin-top:22px;color:#8793a8;font-size:9px;font-weight:800;letter-spacing:1px}
+.landing-footer{display:flex;justify-content:space-between;gap:14px;padding:22px 0;border-top:1px solid #e4e9f4;color:#8490a5;font-size:11px}
+.install-button{white-space:nowrap}.main,.content,.card,.modal{min-width:0}.app{width:100%;overflow-x:clip}.content{width:100%}img{max-width:100%}
+button:focus-visible,a:focus-visible{outline:3px solid #8da2ff;outline-offset:3px}
+@media(max-width:850px){.landing-hero{grid-template-columns:1fr;padding:55px 0 35px;gap:20px}.hero-copy{max-width:680px}.hero-art{min-height:300px}.orbit-one{width:300px}.orbit-two{width:240px}.art-card{max-width:350px}.hero-copy h1{letter-spacing:-3px}}
+@media(max-width:560px){.landing-page{padding:0 18px}.landing-header{height:72px}.landing-brand{font-size:20px}.landing-brand img{width:36px;height:36px}.landing-header>.install-button{padding:8px 10px;font-size:12px}.landing-hero{padding:48px 0 25px}.hero-copy h1{font-size:clamp(45px,14vw,65px);letter-spacing:-2.8px}.hero-copy p{font-size:15px}.trustline{gap:9px 14px}.hero-art{min-height:260px}.art-card{padding:21px;min-height:235px}.art-bars{height:78px}.landing-footer{flex-direction:column}.topactions .install-button{display:none}}
+@media(max-width:360px){.hero-actions .btn{width:100%;justify-content:center}.hero-copy h1{font-size:43px}.hero-art{min-height:230px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
-<aside class="sidebar" id="sidebar"><div class="brand"><span class="brandmark">L</span> ledger<span style="color:#8ea4ff">.</span></div>
+<aside class="sidebar" id="sidebar"><button class="brand logo-home" type="button" aria-label="Go to Ledger landing page"><img src="./logo.svg" alt="" width="38" height="38"><span>Ledger<span style="color:#8ea4ff">.</span></span></button>
 <div class="navlabel">Workspace</div><nav class="nav" id="nav">
 <button class="active" data-page="dashboard"><span class="ico">▦</span>Overview</button><button data-page="transactions"><span class="ico">↕</span>Transactions</button><button data-page="accounts"><span class="ico">▣</span>Accounts</button><button data-page="budgets"><span class="ico">◷</span>Budgets</button><button data-page="goals"><span class="ico">◎</span>Savings goals</button><button data-page="bills"><span class="ico">▤</span>Bills & recurring</button><button data-page="debts"><span class="ico">⇄</span>Loans & EMIs</button><button data-page="assets"><span class="ico">◇</span>Assets & investments</button><button data-page="family"><span class="ico">♧</span>Family</button><button data-page="reports"><span class="ico">▥</span>Reports</button><button data-page="calendar"><span class="ico">▦</span>Calendar</button>
 </nav><div class="navlabel">Manage</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings & backup</button><button data-page="trash"><span class="ico">♲</span>Recycle bin</button></nav><div class="sidefoot">Private by design<br>All data stays on this device.</div></aside>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" id="menuBtn">☰</button><div class="crumb">Workspace <strong id="crumb">Overview</strong></div></div><div class="topactions"><span class="privacy">● LOCAL & PRIVATE</span><button class="btn small" id="quickAdd">＋ Add transaction</button><div class="avatar">L</div></div></header>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" id="menuBtn">☰</button><div class="crumb">Workspace <strong id="crumb">Overview</strong></div></div><div class="topactions"><span class="privacy">● LOCAL & PRIVATE</span><button class="btn small install-button" type="button">Install app</button><button class="btn small" id="quickAdd">＋ Add transaction</button><div class="avatar">L</div></div></header>
 <div class="content">
 <section class="section active" id="page-dashboard"><div class="pagehead"><div><h1>Good day 👋</h1><div class="sub">Here's your financial picture at a glance.</div></div><div class="actions"><select id="dashCurrency" aria-label="Display currency" class="btn"></select><button class="btn primary" onclick="openTx()">＋ New transaction</button></div></div>
 <div class="grid stats" id="stats"></div><div class="grid two"><div class="card"><div class="cardhead"><div><h3>Cash flow</h3><p>Income vs expenses · last 6 months</p></div><span class="pill">Monthly</span></div><div class="reportchart" id="cashflow"></div></div><div class="card"><div class="cardhead"><div><h3>Spending breakdown</h3><p>Expenses by category · this month</p></div></div><div class="donutwrap"><div class="donut" id="donut"></div><div class="legend" id="legend"></div></div></div></div>
@@ -77,7 +108,16 @@ function options(arr,selected){return arr.map(v=>'<option '+(v===selected?'selec
 function accountOptions(id){return data.accounts.map(a=>'<option value="'+a.id+'" '+(a.id===id?'selected':'')+'>'+esc(a.name)+' ('+a.currency+')</option>').join('')}
 function currencyOptions(sel){return Object.keys(CURRENCIES).map(c=>'<option value="'+c+'" '+(c===sel?'selected':'')+'>'+c+' — '+CURRENCIES[c].name+'</option>').join('')}
 function memberOptions(sel){return data.members.map(m=>'<option '+(m.name===sel?'selected':'')+'>'+esc(m.name)+'</option>').join('')}
-function go(p){page=p;document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));document.getElementById('crumb').textContent=({dashboard:'Overview',transactions:'Transactions',accounts:'Accounts',budgets:'Budgets',goals:'Savings goals',bills:'Bills & recurring',debts:'Loans & EMIs',assets:'Assets & investments',family:'Family',reports:'Reports',calendar:'Calendar',settings:'Settings & backup',trash:'Recycle bin'})[p];document.getElementById('sidebar').classList.remove('open');render();window.scrollTo(0,0)}
+function go(p,updateRoute=true){page=p;document.body.classList.remove('landing-mode');document.body.classList.add('app-mode');document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));document.getElementById('crumb').textContent=({dashboard:'Overview',transactions:'Transactions',accounts:'Accounts',budgets:'Budgets',goals:'Savings goals',bills:'Bills & recurring',debts:'Loans & EMIs',assets:'Assets & investments',family:'Family',reports:'Reports',calendar:'Calendar',settings:'Settings & backup',trash:'Recycle bin'})[p]||'Overview';document.getElementById('sidebar').classList.remove('open');if(updateRoute&&location.hash!=='#app/'+p)location.hash='app/'+p;render();window.scrollTo(0,0)}
+function showLanding(){document.body.classList.remove('app-mode');document.body.classList.add('landing-mode');window.scrollTo(0,0)}
+function routeFromHash(){const match=location.hash.match(/^#app\/(dashboard|transactions|accounts|budgets|goals|bills|debts|assets|family|reports|calendar|settings|trash)$/);if(match)go(match[1],false);else showLanding()}
+window.addEventListener('hashchange',routeFromHash);
+let deferredInstallPrompt=null;
+function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null})}else alert('To install Ledger, open your browser menu and choose “Install app” or “Add to Home Screen”, if available.')}
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;document.querySelectorAll('.install-button').forEach(b=>b.textContent='Install Ledger')});
+window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;document.querySelectorAll('.install-button').forEach(b=>b.textContent='App installed')});
+document.querySelectorAll('.logo-home').forEach(b=>b.addEventListener('click',()=>{history.pushState(null,'',location.pathname+location.search);showLanding()}));
+document.querySelectorAll('.install-button').forEach(b=>b.addEventListener('click',installApp));
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)});
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
 document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
@@ -130,5 +170,5 @@ document.getElementById('importFile').onchange=async e=>{const file=e.target.fil
 function exportCSV(){const rows=[['Date','Type','Description','Category','Account','Amount','Currency','Member','Note'],...data.transactions.map(t=>[t.date,t.type,t.description,t.category,data.accounts.find(a=>a.id===t.account)?.name||'',t.amount,t.currency,t.member||'',t.note||''])];const csv=rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');download(new Blob([csv],{type:'text/csv;charset=utf-8'}),'ledger-transactions-'+today()+'.csv')}
 function clearDemo(){if(!confirm('Clear all finance records from this browser? Export a backup first.'))return;data.accounts=[];data.transactions=[];data.budgets=[];data.goals=[];data.bills=[];data.debts=[];data.assets=[];data.members=[];data.trash=[];save()}
 function resetAll(){if(!confirm('ERASE ALL finance data from this browser? Export a backup first. This cannot be undone.'))return;if(!confirm('Final confirmation: permanently erase all app data on this device?'))return;localStorage.removeItem(KEY);localStorage.removeItem(AUTO_KEY);data=seed();save()}
-render();if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+document.getElementById('enterApp').addEventListener('click',()=>go('dashboard'));routeFromHash();if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
