@@ -67,6 +67,14 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 
 All calculations use only the records and manual exchange rates saved in this browser. Forecasts and scores can be incomplete when records are missing. No bank connection, live exchange-rate API, analytics, cloud sync or automatic financial advice is used.
 
+## Reliability checks
+
+- Every GitHub Pages deployment now waits for a dependency-free regression check using Node.js 22. The check parses the application and service-worker JavaScript, verifies unique HTML IDs and click handlers, checks the PWA manifest and offline app-shell files, and protects the blank-first-launch and single-Quick-Add requirements.
+- Local calendar dates are generated from the device's local date rather than UTC, avoiding date/month shifts around midnight in time zones such as India.
+- Imported JSON and encrypted backups are checked and normalised before they can replace current records. Invalid imports are rejected without replacing the current ledger.
+- If the browser's saved ledger cannot be parsed or has an unsupported structure, the original raw data is preserved in the local recovery snapshots before a blank workspace is shown. Export regular backups as an additional safeguard.
+- If browser storage is full or unavailable, Ledger reports the failure, restores the last saved records in the interface, and avoids throwing an unhandled save error.
+
 ## First launch
 
 The app starts with a completely blank workspace. No accounts, transactions, budgets, goals, bills, assets, or family members are pre-created. Add only the records you want to track. Existing browser data is preserved when the app is updated.
