@@ -8,9 +8,20 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 3. Save. The included workflow deploys the root of `main` automatically on each push.
 4. Wait for the Pages deployment. The site will be available at https://shreebalaji767.github.io/personal-finance-manager/
 
-## Branding and navigation
+## Branding, landing page and navigation
 
-The site opens on a dedicated landing page. Select **Open Ledger** to enter the finance workspace. The Ledger logo returns to the landing page. Workspace navigation uses the URL hash, so refreshing while inside a section reloads that same section; opening the site root starts at the landing page. The transparent SVG brand mark is used in the header, favicon and installable app icon. The install button uses the browser's native PWA install prompt when supported.
+- **Ledger logo:** The custom blue-and-green mark identifies the app in the landing page and finance workspace. It is an SVG, so it stays sharp on high-resolution screens.
+- **Transparent logo:** The SVG has no solid background, allowing it to sit cleanly on both light and dark surfaces.
+- **Favicon:** The same mark is used as the browser-tab icon and bookmark icon, making the site easier to recognise.
+- **PWA app icon:** The logo is also declared in the web app manifest so supported browsers can use it when the site is installed.
+- **Landing page:** The landing page is the welcome screen. It introduces Ledger and provides the **Open Ledger** action to enter the actual finance workspace.
+- **Always start at the landing page:** Opening the site's root URL (without a workspace-section hash) displays the landing page. This gives the site a consistent starting point.
+- **Logo returns home:** Clicking the Ledger logo from inside the workspace takes you back to the landing page. It does not delete or reset any financial records.
+- **Refresh keeps your place:** Workspace sections are reflected in the URL hash (for example, `#app/transactions`). Refreshing while viewing a section reloads that same section. It does not send you to the landing page or clear your data. To return to the landing page, click the logo.
+- **Install app button:** On browsers that support the PWA install prompt, the button opens the browser's native installation flow. If the browser does not provide that prompt, the button explains that you can use the browser menu's **Install app** or **Add to Home Screen** option, when available. Installation adds an app-style shortcut/window; it does not create an online account or upload your records.
+- **Responsive layout:** The interface adapts to desktop, tablet and phone screen sizes. Navigation, content panels, buttons and the landing page reflow to fit narrower screens. Browser zoom and device accessibility settings remain available.
+- **Offline app shell:** The service worker caches the app shell, manifest and logo so the interface can open offline after it has been loaded once. Offline availability depends on the browser retaining its cache; keep JSON backups of important records.
+
 
 ## First launch
 
