@@ -182,9 +182,32 @@ function showLanding(){document.body.classList.remove('app-mode');document.body.
 function routeFromHash(){const match=location.hash.match(/^#app\/(dashboard|transactions|accounts|budgets|goals|bills|debts|assets|family|reports|insights|calendar|settings|trash)$/);if(match)go(match[1],false);else showLanding()}
 window.addEventListener('hashchange',routeFromHash);
 let deferredInstallPrompt=null;
-function installApp(){if(deferredInstallPrompt){deferredInstallPrompt.prompt();deferredInstallPrompt.userChoice.finally(()=>{deferredInstallPrompt=null})}else alert('To install Ledger, open your browser menu and choose “Install app” or “Add to Home Screen”, if available.')}
-window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;document.querySelectorAll('.install-button').forEach(b=>b.textContent='Install Ledger')});
-window.addEventListener('appinstalled',()=>{deferredInstallPrompt=null;document.querySelectorAll('.install-button').forEach(b=>b.textContent='App installed')});
+function installApp(){
+ if(!deferredInstallPrompt){
+  alert('To install Ledger, open your browser menu and choose “Install app” or “Add to Home Screen”, if available.');
+  return;
+ }
+ const promptEvent=deferredInstallPrompt;
+ deferredInstallPrompt=null;
+ promptEvent.prompt();
+ promptEvent.userChoice.then(choice=>{
+  document.querySelectorAll('.install-button').forEach(button=>{
+   button.textContent=choice&&choice.outcome==='accepted'?'Installing…':'Install Ledger';
+  });
+ }).catch(()=>{
+  document.querySelectorAll('.install-button').forEach(button=>button.textContent='Install Ledger');
+ });
+}
+window.addEventListener('beforeinstallprompt',event=>{
+ // Keep the browser's install prompt for the explicit Ledger install-button click.
+ event.preventDefault();
+ deferredInstallPrompt=event;
+ document.querySelectorAll('.install-button').forEach(button=>button.textContent='Install Ledger');
+});
+window.addEventListener('appinstalled',()=>{
+ deferredInstallPrompt=null;
+ document.querySelectorAll('.install-button').forEach(button=>button.textContent='App installed');
+});
 document.querySelectorAll('.logo-home').forEach(b=>b.addEventListener('click',()=>{history.pushState(null,'',location.pathname+location.search);showLanding()}));
 document.querySelectorAll('.install-button').forEach(b=>b.addEventListener('click',installApp));
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)});
