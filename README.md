@@ -33,12 +33,19 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 
 ## Quick Add and entering records
 
-- **Quick Add buttons:** The workspace top bar and floating **＋ Quick Add** button open the same menu from any workspace section.
-- **Dashboard shortcuts:** Income, expense, transfer and account shortcuts are visible at the top of the dashboard.
+- **One global Quick Add button:** A single **＋ Quick Add** button in the workspace top bar opens the full add menu. Press **Ctrl+K** (or **⌘K** on Mac) when you are not typing in a field to open it. Dashboard shortcuts and the floating duplicate button are intentionally removed to keep the interface uncluttered.
 - **All add options in one place:** Quick Add opens the existing forms for income, expenses, transfers, accounts, budgets, savings goals, bills, loans/EMIs, assets/investments and family labels.
 - **Section-specific Add buttons:** Each relevant section keeps its own Add button, so you can add an item without opening the global menu.
+- **Transaction receipts:** Attach an optional image (up to 512 KB) to an income or expense transaction. Images stay in local browser storage, can be viewed from the transaction list, and are included in JSON backups.
+- **Credit card details:** Credit-card accounts can store a limit, statement day and payment due day alongside the account balance.
 - **No automatic entries:** Opening Quick Add does not create records. A record is saved only after you fill in its form and press Save. Cancel or close the form to leave your data unchanged.
-- **Mobile layout:** Dashboard shortcuts and the all-options menu reflow for narrow screens. The floating Quick Add button stays within reach.
+- **Mobile layout:** The single global Quick Add menu and its options adapt to narrow screens. The menu avoids multiple competing add buttons.
+
+## Additional account and transaction tools
+
+- Receipt images are optional and limited to 512 KB each to reduce local storage pressure. Large collections of receipt images can use significant browser storage; export backups regularly.
+- Credit-card statement and due-day fields are reminders/reference details only. They do not automatically create payments or change card balances.
+- Recurring bills already support one-time, weekly, monthly, quarterly and yearly schedules. Marking a bill paid remains a manual action and does not silently create a transaction.
 
 ## Advanced insights, planning and privacy upgrades
 
