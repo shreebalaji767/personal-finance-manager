@@ -44,7 +44,18 @@ button:focus-visible,a:focus-visible{outline:3px solid #8da2ff;outline-offset:3p
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
-<body>
+<body class="landing-mode">
+<section class="landing-page" id="landingPage">
+<header class="landing-header">
+<button class="landing-brand logo-home" type="button" aria-label="Ledger home"><img src="./logo.svg" alt="" width="42" height="42"><span>Ledger<span class="brand-period">.</span></span></button>
+<button class="btn install-button" type="button">Install app</button>
+</header>
+<main class="landing-hero">
+<div class="hero-copy"><span class="eyebrow">PRIVATE BY DESIGN · LOCAL FIRST</span><h1>Your money.<br><span>Your clarity.</span></h1><p>A calm, private place to organise your finances. Track what matters, understand your cash flow and keep your records on your own device.</p><div class="hero-actions"><button class="btn primary hero-start" id="enterApp" type="button">Open Ledger <span aria-hidden="true">→</span></button><button class="btn install-button" type="button">Install app</button></div><div class="trustline"><span>✓ No accounts</span><span>✓ No cloud sync</span><span>✓ No ads</span></div></div>
+<div class="hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><div class="art-top"><img src="./logo.svg" alt="" width="38" height="38"><span>LEDGER / PERSONAL</span></div><div class="art-line"></div><div class="art-label">A clearer view of your finances</div><div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="art-foot"><span>PRIVATE</span><span>ON YOUR DEVICE</span></div></div></div>
+</main>
+<footer class="landing-footer"><span>Ledger · Personal Finance Manager</span><span>Your records stay in this browser.</span></footer>
+</section>
 <div class="app">
 <aside class="sidebar" id="sidebar"><button class="brand logo-home" type="button" aria-label="Go to Ledger landing page"><img src="./logo.svg" alt="" width="38" height="38"><span>Ledger<span style="color:#8ea4ff">.</span></span></button>
 <div class="navlabel">Workspace</div><nav class="nav" id="nav">
