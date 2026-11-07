@@ -62,6 +62,7 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Net worth history:** Daily local snapshots are recorded when you save changes, provided you have entered financial records; up to 365 daily entries are retained.
 - **Inflation estimator:** Calculate a future-cost scenario from an amount, assumed annual rate and time period.
 - **Budget warnings:** Budget progress highlights when spending reaches 80% or exceeds the recorded limit.
+- **Custom report dates:** Choose a start date, end date, or both to filter reports to a precise period; clear the dates to return to the preset month/year/all-time views.
 - **Print support:** Use the browser print dialog for a clean print/PDF view of the currently open workspace page.
 
 All calculations use only the records and manual exchange rates saved in this browser. Forecasts and scores can be incomplete when records are missing. No bank connection, live exchange-rate API, analytics, cloud sync or automatic financial advice is used.
@@ -74,7 +75,7 @@ The app starts with a completely blank workspace. No accounts, transactions, bud
 - Dashboard, income/expense/transfer records, accounts and search/filter.
 - Multiple currencies with manually editable exchange rates and a selectable base currency.
 - Budgets, savings goals, bills, loans/EMIs, assets/investments, household member labels.
-- Reports, CSV export and a monthly calendar.
+- Reports with preset periods and custom start/end date ranges, CSV export and a monthly calendar.
 - JSON backup and validated restore; duplicate-transaction warning.
 - Recycle bin with restore and permanent-delete controls for removed records.
 - Paired account transfers: one transfer moves value out of one account and into another without inflating income or expenses.
