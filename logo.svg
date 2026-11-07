@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Ledger">
+  <path d="M34 20h46a17 17 0 0 1 17 17v69H51a17 17 0 0 1-17-17V20Z" fill="none" stroke="#4263eb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M34 20v69a17 17 0 0 0 17 17" fill="none" stroke="#4263eb" stroke-width="9" stroke-linecap="round"/>
+  <path d="M52 47h27M52 66h19" fill="none" stroke="#4263eb" stroke-width="8" stroke-linecap="round"/>
+  <path d="m67 87 15-13 12 9 19-24" fill="none" stroke="#16a477" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
