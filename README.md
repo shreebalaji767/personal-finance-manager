@@ -47,10 +47,14 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Financial calculators:** Estimate loan EMI and savings growth from assumptions you enter. These are educational estimates, not guaranteed returns or lender quotes.
 - **Transaction templates:** Save the details of a recent transaction and reuse them later. Templates are stored locally and do not create records until you save the transaction form.
 - **Split transactions:** Split an existing income or expense into two category entries while preserving the original total and account effect. Transfers are not split.
+- **Bulk transaction actions:** Select multiple entries to change their category or move them to the recycle bin.
 - **Account reconciliation:** Record a statement balance and date, and see the difference from the ledger. Reconciliation does not silently alter transactions or balances.
 - **Dark mode:** Toggle the local interface theme; the preference stays in this browser.
 - **Optional PIN screen:** Adds a casual privacy screen on this browser. It is not encryption, and it does not protect the underlying localStorage from someone with developer-tools or device access.
 - **Encrypted backup:** Creates a password-protected AES-GCM backup using a PBKDF2-derived key through the browser Web Crypto API. Keep the password safe; the app cannot recover it. Import validates the decrypted backup before replacing records.
+- **Net worth history:** Daily local snapshots are recorded when you save changes, provided you have entered financial records; up to 365 daily entries are retained.
+- **Inflation estimator:** Calculate a future-cost scenario from an amount, assumed annual rate and time period.
+- **Budget warnings:** Budget progress highlights when spending reaches 80% or exceeds the recorded limit.
 - **Print support:** Use the browser print dialog for a clean print/PDF view of the currently open workspace page.
 
 All calculations use only the records and manual exchange rates saved in this browser. Forecasts and scores can be incomplete when records are missing. No bank connection, live exchange-rate API, analytics, cloud sync or automatic financial advice is used.
