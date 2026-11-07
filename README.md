@@ -8,6 +8,10 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 3. Save. The included workflow deploys the root of `main` automatically on each push.
 4. Wait for the Pages deployment. The site will be available at https://shreebalaji767.github.io/personal-finance-manager/
 
+## First launch
+
+The app starts with a completely blank workspace. No accounts, transactions, budgets, goals, bills, assets, or family members are pre-created. Add only the records you want to track. Existing browser data is preserved when the app is updated.
+
 ## Features
 - Dashboard, income/expense/transfer records, accounts and search/filter.
 - Multiple currencies with manually editable exchange rates and a selectable base currency.
