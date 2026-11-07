@@ -23,6 +23,15 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Offline app shell:** The service worker caches the app shell, manifest and logo so the interface can open offline after it has been loaded once. Offline availability depends on the browser retaining its cache; keep JSON backups of important records.
 
 
+## Quick Add and entering records
+
+- **Quick Add buttons:** The workspace top bar and floating **＋ Quick Add** button open the same menu from any workspace section.
+- **Dashboard shortcuts:** Income, expense, transfer and account shortcuts are visible at the top of the dashboard.
+- **All add options in one place:** Quick Add opens the existing forms for income, expenses, transfers, accounts, budgets, savings goals, bills, loans/EMIs, assets/investments and family labels.
+- **Section-specific Add buttons:** Each relevant section keeps its own Add button, so you can add an item without opening the global menu.
+- **No automatic entries:** Opening Quick Add does not create records. A record is saved only after you fill in its form and press Save. Cancel or close the form to leave your data unchanged.
+- **Mobile layout:** Dashboard shortcuts and the all-options menu reflow for narrow screens. The floating Quick Add button stays within reach.
+
 ## First launch
 
 The app starts with a completely blank workspace. No accounts, transactions, budgets, goals, bills, assets, or family members are pre-created. Add only the records you want to track. Existing browser data is preserved when the app is updated.
