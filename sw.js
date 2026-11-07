@@ -1,5 +1,5 @@
-const CACHE = 'ledger-static-v13';
-const ASSETS = [
+const CACHE = 'ledger-static-v14';
+const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
@@ -10,7 +10,7 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE)
-      .then(cache => cache.addAll(ASSETS))
+      .then(cache => cache.addAll(APP_SHELL))
       .then(() => self.skipWaiting())
   );
 });
@@ -35,17 +35,14 @@ self.addEventListener('fetch', event => {
 
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            event.waitUntil(
-              caches.open(CACHE).then(cache => cache.put('./index.html', copy))
-            );
-          }
-          return response;
-        })
-        .catch(() => caches.match('./index.html'))
+      fetch(request).then(response => {
+        if (!response || !response.ok) return response;
+        const copy = response.clone();
+        const shellUrl = new URL('./index.html', self.registration.scope).href;
+        return caches.open(CACHE)
+          .then(cache => cache.put(shellUrl, copy).catch(() => {}))
+          .then(() => response);
+      }).catch(() => caches.match(new URL('./index.html', self.registration.scope).href))
     );
     return;
   }
@@ -54,13 +51,11 @@ self.addEventListener('fetch', event => {
     caches.match(request).then(cached => {
       if (cached) return cached;
       return fetch(request).then(response => {
-        if (response && response.ok) {
-          const copy = response.clone();
-          event.waitUntil(
-            caches.open(CACHE).then(cache => cache.put(request, copy))
-          );
-        }
-        return response;
+        if (!response || !response.ok) return response;
+        const copy = response.clone();
+        return caches.open(CACHE)
+          .then(cache => cache.put(request, copy).catch(() => {}))
+          .then(() => response);
       });
     })
   );
