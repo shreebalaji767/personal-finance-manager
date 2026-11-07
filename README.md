@@ -25,7 +25,7 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 
 ## Search engine metadata
 
-- The page title, description, Open Graph metadata and social preview metadata identify the site as **blssnvj21**.
+- Search identity is configured in the HTML title, description, Open Graph metadata, social preview metadata and structured data. The visible product branding throughout the app remains **Ledger**.
 - A canonical URL points search engines to the GitHub Pages home address.
 - Robots directives allow indexing and following links.
 - Schema.org WebApplication JSON-LD describes the app as a free personal finance web application.
@@ -39,6 +39,21 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Section-specific Add buttons:** Each relevant section keeps its own Add button, so you can add an item without opening the global menu.
 - **No automatic entries:** Opening Quick Add does not create records. A record is saved only after you fill in its form and press Save. Cancel or close the form to leave your data unchanged.
 - **Mobile layout:** Dashboard shortcuts and the all-options menu reflow for narrow screens. The floating Quick Add button stays within reach.
+
+## Advanced insights, planning and privacy upgrades
+
+- **Insights & tools workspace:** Three-month average cash-flow projections, an indicative financial health check, emergency-fund planning based on recorded cash-like balances, and month-over-month expense comparisons.
+- **What-if planner:** Model monthly income, expenses, additional savings and a planning period without writing anything to the ledger.
+- **Financial calculators:** Estimate loan EMI and savings growth from assumptions you enter. These are educational estimates, not guaranteed returns or lender quotes.
+- **Transaction templates:** Save the details of a recent transaction and reuse them later. Templates are stored locally and do not create records until you save the transaction form.
+- **Split transactions:** Split an existing income or expense into two category entries while preserving the original total and account effect. Transfers are not split.
+- **Account reconciliation:** Record a statement balance and date, and see the difference from the ledger. Reconciliation does not silently alter transactions or balances.
+- **Dark mode:** Toggle the local interface theme; the preference stays in this browser.
+- **Optional PIN screen:** Adds a casual privacy screen on this browser. It is not encryption, and it does not protect the underlying localStorage from someone with developer-tools or device access.
+- **Encrypted backup:** Creates a password-protected AES-GCM backup using a PBKDF2-derived key through the browser Web Crypto API. Keep the password safe; the app cannot recover it. Import validates the decrypted backup before replacing records.
+- **Print support:** Use the browser print dialog for a clean print/PDF view of the currently open workspace page.
+
+All calculations use only the records and manual exchange rates saved in this browser. Forecasts and scores can be incomplete when records are missing. No bank connection, live exchange-rate API, analytics, cloud sync or automatic financial advice is used.
 
 ## First launch
 
