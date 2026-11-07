@@ -4,8 +4,8 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 
 ## Deploy on GitHub Pages
 1. Open **Settings → Pages** in this repository.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select **main** and **/(root)**, then Save.
+2. Under **Build and deployment**, choose **GitHub Actions** as the source.
+3. Save. The included workflow deploys the root of `main` automatically on each push.
 4. Wait for the Pages deployment. The site will be available at https://shreebalaji767.github.io/personal-finance-manager/
 
 ## Features
