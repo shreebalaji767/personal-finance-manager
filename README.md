@@ -14,6 +14,9 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - Budgets, savings goals, bills, loans/EMIs, assets/investments, household member labels.
 - Reports, CSV export and a monthly calendar.
 - JSON backup and validated restore; duplicate-transaction warning.
+- Recycle bin with restore and permanent-delete controls for removed records.
+- Paired account transfers: one transfer moves value out of one account and into another without inflating income or expenses.
+- Automatic local recovery snapshots (last five saved states) with manual restore.
 - Local browser storage and installable offline PWA.
 
 ## Privacy and data
@@ -21,7 +24,7 @@ All financial data is stored in this browser using localStorage. Nothing is uplo
 
 ## Limitations
 - This is a single-device ledger, not a shared multi-user service.
-- Transfers are recorded as transaction entries; automatic paired-account transfer reconciliation is not yet included.
+- Transfers update both source and destination account balances using the transaction currency and each account's currency. They remain excluded from income/expense reports.
 - Bill status is tracked manually; marking a bill paid does not automatically create an expense.
 - Investment values and loan balances are manually maintained.
 - Browser storage is not encrypted by this app. Use a trusted device and secure browser profile.
