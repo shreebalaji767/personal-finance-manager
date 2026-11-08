@@ -7,7 +7,8 @@ const APP_SHELL = [
   './logo.svg',
   './three-scene.js',
   './tutorial-scene.js',
-  './form-accessibility.js','./workflow-demo.js',
+  './form-accessibility.js',
+  './workflow-demo.js',
   './vendor/three.min.js'
 ];
 
