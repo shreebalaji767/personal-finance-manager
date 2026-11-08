@@ -73,7 +73,7 @@ assert.match(html, /\.nav button\.active/, 'Navigation must have a distinct acti
 assert.match(html, /data-page="planning"/, 'Planning tools navigation must exist');
 assert.match(html, /id="page-planning"/, 'Planning tools page must exist');
 for (const collection of ['templates','journal','settlements','reconciliations']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New planning collection must start empty: ' + collection);
-for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTemplate','openPlanningJournal','openPlanningSettlement','savePlanningReconciliation','calculatePlanningInvest','calculatePlanningLoan','refreshPlanningStorage','checkPlanningReminders']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing planning tool: ' + fn);
+for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTemplate','openPlanningJournal','openPlanningSettlement','savePlanningReconciliation','calculatePlanningInvest','calculatePlanningLoan','calculatePlanningRetirement','calculatePlanningDepreciation','refreshPlanningStorage','checkPlanningReminders']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing planning tool: ' + fn);
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
