@@ -81,6 +81,35 @@ body.dark-theme .topbar,body.dark-theme .card,body.dark-theme .modal,body.dark-t
 body.dark-theme .modalback{background:#0009}body.dark-theme .modal{background:#18243a}body.dark-theme .notice{background:#26365b;color:#dce5ff}body.dark-theme .track,body.dark-theme .progress{background:#303d55}body.dark-theme .art-card{background:#18243a;border-color:#2b3850}body.dark-theme .landing-page{background:linear-gradient(135deg,#101827,#17243a);color:#e8edf8}body.dark-theme .landing-header,body.dark-theme .landing-footer{border-color:#2b3850}body.dark-theme .landing-brand,body.dark-theme .hero-copy h1{color:#e8edf8}body.dark-theme .hero-copy p,body.dark-theme .trustline{color:#aab6ca}
 .divider{height:1px;background:var(--line);margin:16px 0}
 @media print{.sidebar,.topbar,.actions,.btn{display:none!important}.main{margin:0}.content{padding:0}.section{display:none!important}.section.active{display:block!important}.card{box-shadow:none;break-inside:avoid}}
+
+/* Refined shared sidebar and navigation */
+.sidebar{width:252px;padding:22px 14px 16px;background:linear-gradient(180deg,#14213c 0%,#101b33 100%);border-right:1px solid #263653;box-shadow:8px 0 28px rgba(13,27,51,.08);gap:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3b4c6b transparent}
+.sidebar::-webkit-scrollbar{width:5px}.sidebar::-webkit-scrollbar-thumb{background:#3b4c6b;border-radius:8px}
+.brand.logo-home{width:100%;min-height:54px;padding:0 10px 17px;margin:0 0 12px;gap:12px;font-size:18px;letter-spacing:-.45px}
+.brand.logo-home img{width:36px;height:36px;flex:none}
+.navlabel{padding:15px 11px 7px;color:#8191ad;font-size:9px;letter-spacing:1.45px}
+.nav{gap:3px}
+.nav button{position:relative;min-height:39px;padding:9px 11px;border:1px solid transparent;border-radius:9px;gap:11px;color:#b7c3d8;font-size:12.5px;font-weight:560;line-height:1.25;transition:background .16s ease,color .16s ease,border-color .16s ease}
+.nav button:hover{background:#1d2d4b;border-color:#293d60;color:#fff}
+.nav button.active{background:linear-gradient(90deg,#2b4169,#233756);border-color:#354b70;color:#fff;box-shadow:inset 2px 0 #8ea4ff}
+.nav .ico{width:22px;height:22px;display:grid;place-items:center;flex:none;border-radius:7px;background:#ffffff0b;color:#aebde0;font-size:14px}
+.nav button.active .ico{background:#718cff26;color:#c4d0ff}
+.nav button:focus-visible,.brand.logo-home:focus-visible,.mobilemenu:focus-visible{outline:2px solid #9eb0ff;outline-offset:2px}
+.sidefoot{margin-top:auto;padding:14px 11px 2px;color:#91a0ba;font-size:10.5px;line-height:1.65;border-top:1px solid #2a3a57}
+.main{margin-left:252px}
+.sidebar-scrim{display:none}
+@media(max-width:1050px) and (min-width:721px){.sidebar{width:226px;padding-inline:12px}.main{margin-left:226px}.nav button{font-size:12px;padding-inline:9px}}
+@media(max-width:720px){
+ body.drawer-open{overflow:hidden}
+ .sidebar{position:fixed;inset:0 auto 0 0;width:min(292px,88vw);height:100dvh;padding:20px 14px 16px;transform:translateX(-105%);visibility:hidden;opacity:0;z-index:30;overflow-y:auto;box-shadow:18px 0 55px #07142c55;transition:transform .22s ease,opacity .22s ease,visibility .22s}
+ .sidebar.open{width:min(292px,88vw);padding:20px 14px 16px;transform:translateX(0);visibility:visible;opacity:1}
+ .sidebar-scrim{display:block;position:fixed;inset:0;z-index:29;border:0;padding:0;background:rgba(8,17,34,.48);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s}
+ .sidebar-scrim.open{opacity:1;visibility:visible;pointer-events:auto}
+ .main{margin-left:0}
+ .topbar{z-index:4}
+ .mobilemenu{width:38px;height:38px;justify-content:center;padding:0;border-radius:10px;background:#f6f8fc}
+}
+@media(prefers-reduced-motion:reduce){.sidebar,.sidebar-scrim,.nav button{transition:none}}
 </style>
 </head>
 <body class="landing-mode">
@@ -96,11 +125,11 @@ body.dark-theme .modalback{background:#0009}body.dark-theme .modal{background:#1
 <footer class="landing-footer"><span>Ledger · Personal Finance Manager</span><span>Your records stay in this browser.</span></footer>
 </section>
 <div class="app">
-<aside class="sidebar" id="sidebar"><button class="brand logo-home" type="button" aria-label="Go to Ledger landing page"><img src="./logo.svg" alt="" width="38" height="38"><span>Ledger<span style="color:#8ea4ff">.</span></span></button>
+<button class="sidebar-scrim" id="sidebarScrim" type="button" aria-label="Close navigation" tabindex="-1"></button><aside class="sidebar" id="sidebar" aria-label="Main navigation"><button class="brand logo-home" type="button" aria-label="Go to Ledger landing page"><img src="./logo.svg" alt="" width="38" height="38"><span>Ledger<span style="color:#8ea4ff">.</span></span></button>
 <div class="navlabel">Workspace</div><nav class="nav" id="nav">
 <button class="active" data-page="dashboard"><span class="ico">▦</span>Overview</button><button data-page="transactions"><span class="ico">↕</span>Transactions</button><button data-page="accounts"><span class="ico">▣</span>Accounts</button><button data-page="budgets"><span class="ico">◷</span>Budgets</button><button data-page="goals"><span class="ico">◎</span>Savings goals</button><button data-page="bills"><span class="ico">▤</span>Bills & recurring</button><button data-page="debts"><span class="ico">⇄</span>Loans & EMIs</button><button data-page="assets"><span class="ico">◇</span>Assets & investments</button><button data-page="family"><span class="ico">♧</span>Family</button><button data-page="reports"><span class="ico">▥</span>Reports</button><button data-page="insights"><span class="ico">✦</span>Insights & tools</button><button data-page="studio"><span class="ico">▧</span>Finance Studio</button><button data-page="calendar"><span class="ico">▦</span>Calendar</button>
 </nav><div class="navlabel">Manage</div><nav class="nav"><button data-page="settings"><span class="ico">⚙</span>Settings & backup</button><button data-page="trash"><span class="ico">♲</span>Recycle bin</button></nav><div class="sidefoot">Private by design<br>All data stays on this device.</div></aside>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" id="menuBtn">☰</button><div class="crumb">Workspace <strong id="crumb">Overview</strong></div></div><div class="topactions"><span class="privacy">● LOCAL & PRIVATE</span><button class="btn small install-button" type="button">Install app</button><button class="btn small primary" id="quickAdd" type="button">＋ Quick Add</button><div class="avatar">L</div></div></header>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" id="menuBtn" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">☰</button><div class="crumb">Workspace <strong id="crumb">Overview</strong></div></div><div class="topactions"><span class="privacy">● LOCAL & PRIVATE</span><button class="btn small install-button" type="button">Install app</button><button class="btn small primary" id="quickAdd" type="button">＋ Quick Add</button><div class="avatar">L</div></div></header>
 <div class="content">
 <section class="section active" id="page-dashboard"><div class="pagehead"><div><h1>Good day 👋</h1><div class="sub">Here's your financial picture at a glance.</div></div><div class="actions"><select id="dashCurrency" aria-label="Display currency" class="btn"></select><button class="btn primary" onclick="openTx()">＋ New transaction</button></div></div>
 <div class="grid stats" id="stats"></div><div class="grid two"><div class="card"><div class="cardhead"><div><h3>Cash flow</h3><p>Income vs expenses · last 6 months</p></div><span class="pill">Monthly</span></div><div class="reportchart" id="cashflow"></div></div><div class="card"><div class="cardhead"><div><h3>Spending breakdown</h3><p>Expenses by category · this month</p></div></div><div class="donutwrap"><div class="donut" id="donut"></div><div class="legend" id="legend"></div></div></div></div>
@@ -240,7 +269,9 @@ function options(arr,selected){return arr.map(v=>'<option '+(v===selected?'selec
 function accountOptions(id){return data.accounts.map(a=>'<option value="'+a.id+'" '+(a.id===id?'selected':'')+'>'+esc(a.name)+' ('+a.currency+')</option>').join('')}
 function currencyOptions(sel){return Object.keys(CURRENCIES).map(c=>'<option value="'+c+'" '+(c===sel?'selected':'')+'>'+c+' — '+CURRENCIES[c].name+'</option>').join('')}
 function memberOptions(sel){return data.members.map(m=>'<option '+(m.name===sel?'selected':'')+'>'+esc(m.name)+'</option>').join('')}
-function go(p,updateRoute=true){page=p;document.body.classList.remove('landing-mode');document.body.classList.add('app-mode');document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));document.getElementById('crumb').textContent=({dashboard:'Overview',transactions:'Transactions',accounts:'Accounts',budgets:'Budgets',goals:'Savings goals',bills:'Bills & recurring',debts:'Loans & EMIs',assets:'Assets & investments',family:'Family',reports:'Reports',calendar:'Calendar',insights:'Insights & tools',studio:'Finance Studio',settings:'Settings & backup',trash:'Recycle bin'})[p]||'Overview';document.getElementById('sidebar').classList.remove('open');if(updateRoute&&location.hash!=='#app/'+p)location.hash='app/'+p;render();window.scrollTo(0,0)}
+function closeSidebar(){const sidebar=document.getElementById('sidebar'),scrim=document.getElementById('sidebarScrim'),button=document.getElementById('menuBtn');sidebar.classList.remove('open');scrim.classList.remove('open');document.body.classList.remove('drawer-open');button.setAttribute('aria-expanded','false');button.setAttribute('aria-label','Open navigation')}
+function toggleSidebar(){const sidebar=document.getElementById('sidebar'),scrim=document.getElementById('sidebarScrim'),button=document.getElementById('menuBtn'),opening=!sidebar.classList.contains('open');sidebar.classList.toggle('open',opening);scrim.classList.toggle('open',opening);document.body.classList.toggle('drawer-open',opening);button.setAttribute('aria-expanded',String(opening));button.setAttribute('aria-label',opening?'Close navigation':'Open navigation')}
+function go(p,updateRoute=true){page=p;document.body.classList.remove('landing-mode');document.body.classList.add('app-mode');document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id==='page-'+p));document.querySelectorAll('[data-page]').forEach(x=>{const active=x.dataset.page===p;x.classList.toggle('active',active);if(active)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});document.getElementById('crumb').textContent=({dashboard:'Overview',transactions:'Transactions',accounts:'Accounts',budgets:'Budgets',goals:'Savings goals',bills:'Bills & recurring',debts:'Loans & EMIs',assets:'Assets & investments',family:'Family',reports:'Reports',calendar:'Calendar',insights:'Insights & tools',studio:'Finance Studio',settings:'Settings & backup',trash:'Recycle bin'})[p]||'Overview';closeSidebar();if(updateRoute&&location.hash!=='#app/'+p)location.hash='app/'+p;render();window.scrollTo(0,0)}
 function showLanding(){document.body.classList.remove('app-mode');document.body.classList.add('landing-mode');window.scrollTo(0,0)}
 function routeFromHash(){const match=location.hash.match(/^#app\/(dashboard|transactions|accounts|budgets|goals|bills|debts|assets|family|reports|insights|calendar|studio|settings|trash)$/);if(match)go(match[1],false);else showLanding()}
 window.addEventListener('hashchange',routeFromHash);
@@ -275,7 +306,7 @@ document.querySelectorAll('.logo-home').forEach(b=>b.addEventListener('click',()
 document.querySelectorAll('.install-button').forEach(b=>b.addEventListener('click',installApp));
 document.getElementById('nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(b)go(b.dataset.page)});
 document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('menuBtn').onclick=toggleSidebar;document.getElementById('sidebarScrim').onclick=closeSidebar;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar()});
 document.getElementById('quickAdd').onclick=openQuickAdd;
 function ledgerQuickAddShortcut(e){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&!/input|textarea|select/i.test(document.activeElement?.tagName||'')){e.preventDefault();openQuickAdd()}}document.addEventListener('keydown',ledgerQuickAddShortcut);
 
