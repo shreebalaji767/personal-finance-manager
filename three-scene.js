@@ -1,6 +1,6 @@
 (() => {
   const host = document.querySelector('.hero-art');
-  if (!host || !('WebGLRenderingContext' in window)) return;
+  if (!host || !window.THREE || !('WebGLRenderingContext' in window)) return;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const scene = new THREE.Scene();
