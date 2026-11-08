@@ -565,7 +565,7 @@ function calculatePlanningDepreciation(){
 }
 function calculatePlanningInvest(){
  const principal=Math.max(0,Number(document.getElementById('calcPrincipal').value)||0),monthly=Math.max(0,Number(document.getElementById('planningCalcMonthly').value)||0),annual=Math.max(0,Math.min(100,Number(document.getElementById('calcRate').value)||0))/100,years=Math.max(1,Math.min(80,Math.floor(Number(document.getElementById('calcYears').value)||1))),n=years*12,r=annual/12;
- const fv=principal*Math.pow(1+r,n)+(r?monthly*(Math.pow(1+r,n)-1)/r*(1+r):monthly*n),invested=principal+monthly*n;
+ const fv=principal*Math.pow(1+r,n)+(r?monthly*(Math.pow(1+r,n)-1)/r:monthly*n),invested=principal+monthly*n;
  document.getElementById('calcInvestResult').textContent='Illustrative future value: '+money(fv,data.settings.base)+'. Contributions: '+money(invested,data.settings.base)+'. Estimated growth: '+money(fv-invested,data.settings.base)+'. Assumes monthly compounding and contributions at month-end.';
 }
 function planningLoanMonths(balance,rate,emi){
