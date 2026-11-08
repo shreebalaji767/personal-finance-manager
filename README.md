@@ -134,3 +134,12 @@ All financial data is stored in this browser using localStorage. Nothing is uplo
 - Bill status is tracked manually; marking a bill paid does not automatically create an expense.
 - Investment values and loan balances are manually maintained.
 - Browser storage is not encrypted by this app. Use a trusted device and secure browser profile.
+
+
+## Three.js 3D visual layer
+
+- The landing-page hero includes an animated 3D finance illustration built with **Three.js r187** (MIT-licensed), using locally hosted files in `vendor/three.module.js` and `three-scene.js`.
+- The scene uses lightweight geometric objects, gentle floating/rotation, subtle pointer response, and responsive rendering. It pauses when the hero is off-screen or the tab is hidden, and caps device pixel ratio to reduce GPU load.
+- The scene is decorative only. It does not read, change, or calculate financial records, and all controls and finance features remain normal HTML/CSS/JavaScript.
+- WebGL failures and unsupported devices keep the original illustration visible. The scene is disabled for users who request reduced motion.
+- The Three.js library is stored in this repository and added to the service-worker app shell, so no runtime CDN, API, account, subscription, or external service is required. The service-worker cache version is bumped when these assets change.
