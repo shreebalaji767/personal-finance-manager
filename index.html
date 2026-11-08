@@ -504,6 +504,7 @@ function openPlanningTemplate(id){
  const old=(data.templates||[]).find(x=>x.id===id)||{name:'',type:'expense',description:'',category:CATS.expense[0],amount:'',currency:data.settings.base,account:data.accounts[0]?.id||'',member:data.members[0]?.name||'',note:''};
  modal(id?'Edit transaction template':'Add transaction template','<form id="planningTemplateForm"><div class="field"><label>Template name</label><input name="name" required maxlength="50" value="'+esc(old.name)+'"></div><div class="formgrid"><div class="field"><label>Type</label><select name="type">'+options(['expense','income'],old.type)+'</select></div><div class="field"><label>Category</label><select name="category">'+options(CATS[old.type]||CATS.expense,old.category)+'</select></div><div class="field"><label>Typical amount (optional)</label><input name="amount" type="number" min="0" step=".01" value="'+esc(old.amount)+'"></div><div class="field"><label>Currency</label><select name="currency">'+currencyOptions(old.currency)+'</select></div><div class="field"><label>Account</label><select name="account">'+accountOptions(old.account)+'</select></div><div class="field"><label>Family member</label><select name="member">'+memberOptions(old.member)+'</select></div></div><div class="field"><label>Description</label><input name="description" maxlength="90" value="'+esc(old.description)+'"></div><div class="field"><label>Note</label><input name="note" maxlength="200" value="'+esc(old.note)+'"></div><button class="btn primary">Save template</button></form>');
  const form=document.getElementById('planningTemplateForm');
+ form.elements.type.onchange=()=>{form.elements.category.innerHTML=options(CATS[form.elements.type.value]||CATS.expense,'')};
  form.onsubmit=e=>{e.preventDefault();const v=Object.fromEntries(new FormData(form));v.amount=Number(v.amount)||'';if(id)Object.assign(old,v);else data.templates.push({...v,id:uid()});if(!save())return;closeModal()};
 }
 function usePlanningTemplate(id){
@@ -525,7 +526,7 @@ function openPlanningSettlement(id){
  const form=document.getElementById('planningSettlementForm');
  form.onsubmit=e=>{e.preventDefault();const v=Object.fromEntries(new FormData(form));v.amount=Number(v.amount);if(v.paidBy===v.paidTo)return alert('Choose two different household members.');if(id)Object.assign(old,v);else data.settlements.unshift({...v,id:uid()});if(!save())return;closeModal()};
 }
-function deletePlanningSettlement(id){if(!confirm('Delete this settlement record?'))return;data.settlements=data.settlements.filter(x=>x.id!==id);save()}
+function deletePlanningSettlement(id){const item=data.settlements.find(x=>x.id===id);if(!item||!confirm('Move this settlement to the recycle bin?'))return;data.trash.unshift({id:uid(),kind:'settlements',item:JSON.parse(JSON.stringify(item)),deletedAt:new Date().toISOString()});data.settlements=data.settlements.filter(x=>x.id!==id);save()}
 function savePlanningReconciliation(){
  const id=document.getElementById('planningReconAccount').value,a=data.accounts.find(x=>x.id===id),statement=Number(document.getElementById('planningReconBalance').value);
  if(!a)return alert('Add and select an account first.');
