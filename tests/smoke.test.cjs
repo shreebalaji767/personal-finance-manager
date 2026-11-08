@@ -26,7 +26,6 @@ assert.ok(html.includes('<script src="./form-accessibility.js" defer></script>')
 assert.match(worker, /form-accessibility\.js/, 'Form accessibility helper must be cached offline');
 assert.ok(formAccessibility.includes('label.htmlFor=control.id'), 'Unassociated labels must be linked to controls');
 assert.ok(formAccessibility.includes('new MutationObserver'), 'Dynamically created forms must be handled');
-assert.ok(html.includes('id="ledgerTour"'), 'Landing page must include the guided 3D tutorial');
 assert.ok(html.includes('id="realWorkflow"'), 'Landing page must include the real application workflow demo');
 assert.ok(html.includes('guidedDemo=1'), 'Workflow iframe must run in isolated demo mode');
 assert.ok(html.includes('<script src="./workflow-demo.js"></script>'), 'Workflow driver must load');
@@ -35,11 +34,10 @@ assert.match(appScript, /if\(DEMO_MODE\)\{render\(\);return true\}/, 'Demo saves
 const workflowDemo = read('workflow-demo.js');
 assert.doesNotThrow(() => new Function(workflowDemo), 'Guided workflow driver must parse');
 assert.match(worker, /workflow-demo\.js/, 'Workflow driver must be cached offline');
-assert.ok(html.includes('id="watchTour"'), 'Landing page must link to the tutorial');
-assert.ok(html.includes('<script src="./tutorial-scene.js"></script>'), 'Tutorial script must load locally');
-assert.match(worker, /\.\/tutorial-scene\.js/, 'Tutorial script must be in the offline app shell');
-for (const id of ['tourTitle','tourLabel','tourCopy','tourTip','tourCount','tourProgress','tourPlay','tourPrev','tourNext']) assert.ok(html.includes('id="' + id + '"'), 'Missing tutorial control: ' + id);
-for (const kind of ['dashboard','accounts','transactions','budgets','goals','bills','reports','backup']) assert.ok(tutorialScene.includes("kind:'" + kind + "'"), 'Missing 3D tutorial scene: ' + kind);
+assert.ok(!html.includes('id="ledgerTour"'), 'The removed standalone 3D tutorial must stay removed');
+assert.ok(html.includes('id="watchTour"') && html.includes('See live demo'), 'Landing page CTA must lead to the real workflow demo');
+assert.ok(!html.includes('<script src="./tutorial-scene.js"></script>'), 'Removed tutorial script must not load');
+assert.ok(!worker.includes('tutorial-scene.js'), 'Removed tutorial script must not be cached offline');
 assert.ok(fs.existsSync(path.join(root, 'vendor/three.min.js')), 'The local Three.js runtime must be bundled');
 assert.match(html, /<script src="\.\/vendor\/three\.min\.js"><\/script>/, 'Three.js must load from the local bundle');
 assert.match(html, /<script src="\.\/three-scene\.js"><\/script>/, 'The 3D scene script must be included');
