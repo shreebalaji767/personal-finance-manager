@@ -77,7 +77,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v17/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v18/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
