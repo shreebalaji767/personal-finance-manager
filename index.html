@@ -155,6 +155,27 @@ body.dark-theme .tour-steps button{background:#18243a;border-color:#344563;color
 <div class="hero-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><div class="art-top"><img src="./logo.svg" alt="" width="38" height="38"><span>LEDGER / PERSONAL</span></div><div class="art-line"></div><div class="art-label">A clearer view of your finances</div><div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="art-foot"><span>PRIVATE</span><span>ON YOUR DEVICE</span></div></div></div>
 </main>
 
+<section class="workflow-section" id="realWorkflow" aria-labelledby="realWorkflowTitle">
+<style>
+.workflow-section{max-width:1440px;margin:0 auto;padding:52px clamp(16px,5vw,76px) 64px;color:#17233b}
+.workflow-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}.workflow-head h2{font-size:clamp(25px,4vw,38px);letter-spacing:-1.2px;margin:7px 0}.workflow-head p{color:#718096;margin:0;max-width:650px}
+.workflow-stage{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px;align-items:stretch}
+.workflow-screen{background:#111b30;border:1px solid #dce3ef;border-radius:18px;padding:10px;box-shadow:0 18px 50px #17233b18;min-width:0}
+.workflow-screen iframe{display:block;width:100%;height:680px;border:0;border-radius:10px;background:#f5f7fb}
+.workflow-aside{background:#fff;border:1px solid #e4e9f2;border-radius:16px;padding:20px;display:flex;flex-direction:column;min-width:0}
+.workflow-kicker{font-size:10px;font-weight:850;letter-spacing:1.4px;color:#4263eb}.workflow-aside h3{font-size:21px;line-height:1.2;margin:12px 0 9px}.workflow-aside p{color:#65738b;line-height:1.7;font-size:13px}.workflow-counter{font-size:11px;color:#718096;font-weight:750;margin-top:auto;padding-top:18px}
+.workflow-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.workflow-actions .btn{flex:1;justify-content:center}.workflow-note{font-size:11px;color:#718096;margin-top:12px;line-height:1.6}
+.workflow-progress{height:5px;border-radius:8px;background:#edf0f6;overflow:hidden;margin-top:12px}.workflow-progress span{display:block;height:100%;width:0;background:#4263eb;transition:width .25s}
+@media(max-width:900px){.workflow-stage{grid-template-columns:1fr}.workflow-screen iframe{height:620px}.workflow-aside{min-height:230px}.workflow-counter{margin-top:10px}}
+@media(max-width:560px){.workflow-section{padding:38px 14px}.workflow-head{align-items:flex-start;flex-direction:column}.workflow-screen{padding:6px;border-radius:13px}.workflow-screen iframe{height:610px}.workflow-aside{padding:16px}}
+</style>
+<div class="workflow-head"><div><span class="eyebrow">REAL APP · GUIDED WORKFLOW</span><h2 id="realWorkflowTitle">Watch Ledger being used.</h2><p>This walkthrough drives the actual Ledger screens and forms with fictional sample entries. It runs in a read-only demo session and never changes your saved records.</p></div><span class="tour-badge">LIVE APP DEMO</span></div>
+<div class="workflow-stage">
+<div class="workflow-screen"><iframe id="workflowApp" title="Ledger application running with fictional demonstration data" loading="lazy" src="./index.html?guidedDemo=1#app/dashboard" referrerpolicy="no-referrer"></iframe></div>
+<aside class="workflow-aside" aria-live="polite"><span class="workflow-kicker" id="workflowStepLabel">STEP 01 / 09</span><h3 id="workflowStepTitle">Your dashboard</h3><p id="workflowStepCopy">Start with the overview. The demo begins with an empty set of sample records, just like a fresh Ledger setup.</p><div class="workflow-progress"><span id="workflowProgress"></span></div><div class="workflow-actions"><button class="btn" id="workflowPrev" type="button">← Back</button><button class="btn primary" id="workflowNext" type="button">Next →</button></div><div class="workflow-actions"><button class="btn" id="workflowPlay" type="button">▶ Play walkthrough</button><button class="btn" id="workflowRestart" type="button">↺ Restart</button></div><div class="workflow-counter" id="workflowCounter">01 of 09</div><p class="workflow-note">Demo-only data · No uploads · No account connection · No local finance records are read or written. The app preview is interactive; use the walkthrough controls to advance the guided actions.</p></aside>
+</div>
+</section>
+
 <section class="tour-section" id="ledgerTour" aria-labelledby="tourHeading">
 <div class="tour-heading"><div><span class="eyebrow">A QUICK 3D WALKTHROUGH</span><h2 id="tourHeading">See how Ledger works.</h2><p>Eight short scenes. A practical tour from your first account to a safe backup.</p></div><span class="tour-badge">INTERACTIVE · 3D</span></div>
 <div class="tour-layout"><div class="tour-visual"><div class="tour-scene" id="ledgerTourScene" role="img" aria-label="Animated three-dimensional finance tutorial illustration"></div><div class="tour-scene-caption"><span>LEDGER / GUIDED TOUR</span><span id="tourCount">01 / 08</span></div></div>
@@ -245,6 +266,7 @@ body.dark-theme .tour-steps button{background:#18243a;border-color:#344563;color
 <div class="modalback" id="modalBack"><div class="modal"><div class="modalhead"><h2 id="modalTitle">Add item</h2><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
 <script>
 const KEY='ledger.finance.v1',AUTO_KEY='ledger.finance.autobackups.v1';
+const DEMO_MODE=new URLSearchParams(location.search).get('guidedDemo')==='1';
 const CURRENCIES={INR:{name:'Indian Rupee',symbol:'₹'},USD:{name:'US Dollar',symbol:'$'},EUR:{name:'Euro',symbol:'€'},GBP:{name:'British Pound',symbol:'£'},AED:{name:'UAE Dirham',symbol:'د.إ'},CAD:{name:'Canadian Dollar',symbol:'C$'},AUD:{name:'Australian Dollar',symbol:'A$'},SGD:{name:'Singapore Dollar',symbol:'S$'},JPY:{name:'Japanese Yen',symbol:'¥'},CHF:{name:'Swiss Franc',symbol:'CHF'},SAR:{name:'Saudi Riyal',symbol:'﷼'}};
 const CATS={expense:['Food & groceries','Housing','Transport','Utilities','Healthcare','Shopping','Education','Entertainment','Travel','Insurance','Personal care','Family','Other'],income:['Salary','Business','Freelance','Interest','Rental income','Gift','Other'],transfer:['Account transfer']};
 const COLORS=['#4263eb','#15a47a','#f2b84b','#e77d87','#8b6bd6','#43a6b8','#7c91a8'];
@@ -253,7 +275,8 @@ const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth
 const localMonthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 const monthKey=d=>String(d||today()).slice(0,7);
 const seed=()=>({version:1,settings:{base:'INR',name:'',rates:{INR:1,USD:83.5,EUR:90.5,GBP:105,AED:22.7,CAD:61,AUD:54,SGD:62,JPY:.56,CHF:94,SAR:22.2}},accounts:[],trash:[],transactions:[],budgets:[],goals:[],bills:[],debts:[],assets:[],members:[],subscriptions:[],customCategories:[],plans:[],templates:[],journal:[],settlements:[],reconciliations:[]});
-let data=load(),page='dashboard',calDate=new Date();
+let data=DEMO_MODE?seed():load(),page='dashboard',calDate=new Date();
+if(DEMO_MODE)data.settings.name='Ledger guided demo';
 function removeOldDemoRecords(x){
   const demoTx=[['Monthly salary','income','Salary','bank',65000],['Grocery shopping','expense','Food & groceries','cash',2450],['Electricity bill','expense','Utilities','bank',1800]];
   x.transactions=x.transactions.filter(t=>!demoTx.some(([description,type,category,account,amount])=>t.description===description&&t.type===type&&t.category===category&&t.account===account&&Number(t.amount)===amount));
@@ -302,6 +325,7 @@ function load(){
  return seed();
 }
 function save(){
+ if(DEMO_MODE){render();return true}
  let previous=null,previousData=null;
  try{previous=localStorage.getItem(KEY);if(previous){try{previousData=normaliseData(JSON.parse(previous))}catch(e){}}}
  catch(e){alert('Browser storage is unavailable. Check your browser privacy settings and try again.');return false}
@@ -649,5 +673,6 @@ initPrivacyTools();routeFromHash();
 <script src="./vendor/three.min.js"></script>
 <script src="./three-scene.js"></script>
 <script src="./tutorial-scene.js"></script>
+<script src="./workflow-demo.js"></script>
 <script src="./form-accessibility.js" defer></script>
 </body></html>

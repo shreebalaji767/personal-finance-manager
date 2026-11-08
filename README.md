@@ -152,3 +152,8 @@ All financial data is stored in this browser using localStorage. Nothing is uplo
 - The 3D scene uses the locally bundled Three.js runtime. It has no CDN, network calls, external video hosting, analytics, or paid services.
 - The animation pauses when it is off-screen or the browser tab is hidden. It uses a reduced-motion-friendly manual mode, responsive sizing, and a text explanation for every scene. WebGL failures leave the written walkthrough and controls available.
 - The service-worker cache is bumped to `ledger-static-v20` so the new tutorial script is available offline after the updated app shell is installed.
+
+
+### Guided real-app workflow
+
+The landing page includes a live guided workflow that operates the actual Ledger screens with fictional sample entries. The embedded demo uses a dedicated guidedDemo query mode: it starts from an empty in-memory dataset and save() only re-renders the demo, so it never reads, overwrites, or exports your normal finance records. Use the step controls to create a sample account, add income and expenses, set a budget, create a savings goal, add a bill, view reports, and inspect backup settings. The original 3D scene tour remains available below it.
