@@ -179,6 +179,10 @@ body.dark-theme .modalback{background:#0009}body.dark-theme .modal{background:#1
  </div>
 </div>
 <div class="grid two" style="margin-top:16px">
+ <div class="card"><h3>Retirement corpus scenario</h3><p class="sub">Estimate a target corpus from today's monthly expenses, assumed inflation and an assumed withdrawal rate.</p><div class="field"><label>Current monthly expenses</label><input id="retireMonthlyExpense" type="number" min="0" step=".01" value="0"></div><div class="formgrid"><div class="field"><label>Years until retirement</label><input id="retireYears" type="number" min="1" max="80" value="20"></div><div class="field"><label>Assumed inflation (%)</label><input id="retireInflation" type="number" min="0" max="100" step=".1" value="6"></div><div class="field"><label>Annual withdrawal rate (%)</label><input id="retireWithdrawal" type="number" min=".1" max="20" step=".1" value="4"></div></div><button class="btn primary" onclick="calculatePlanningRetirement()">Estimate corpus</button><div id="retireResult" class="notice">Enter your own assumptions.</div></div>
+ <div class="card"><h3>Asset depreciation scenario</h3><p class="sub">Estimate an asset's future value using a constant annual depreciation assumption.</p><div class="field"><label>Current asset value</label><input id="depreciationValue" type="number" min="0" step=".01" value="0"></div><div class="formgrid"><div class="field"><label>Annual depreciation (%)</label><input id="depreciationRate" type="number" min="0" max="100" step=".1" value="10"></div><div class="field"><label>Years</label><input id="depreciationYears" type="number" min="0" max="100" value="5"></div></div><button class="btn primary" onclick="calculatePlanningDepreciation()">Estimate value</button><div id="depreciationResult" class="notice">Enter your own assumptions.</div></div>
+</div>
+<div class="grid two" style="margin-top:16px">
  <div class="card"><h3>Local storage monitor</h3><p class="sub">A browser-reported estimate. It does not inspect or upload your data.</p><div id="planningStorage"></div><button class="btn" onclick="refreshPlanningStorage()">Refresh estimate</button></div>
  <div class="card"><h3>Budget rollover status</h3><p class="sub">For budgets with rollover enabled, unused amount from the previous calendar month is added to this month's available limit. Negative carry is not rolled over.</p><div id="planningBudgetRollover"></div></div>
 </div>
@@ -549,6 +553,15 @@ function checkPlanningReminders(){
 function renderPlanningBillReminders(due){
  const el=document.getElementById('planningBillReminders');if(!el)return;
  el.innerHTML=due.length?due.map(b=>'<div class="switchrow"><span><b>'+esc(b.name)+'</b><span class="smallnote">'+esc(b.due)+' · '+money(b.amount,b.currency)+'</span></span><button class="btn small" onclick="go(\'bills\')">View</button></div>').join(''):'<div class="empty">No unpaid bills due in the next 7 days.</div>';
+}
+function calculatePlanningRetirement(){
+ const expense=Math.max(0,Number(document.getElementById('retireMonthlyExpense').value)||0),years=Math.max(1,Math.min(80,Number(document.getElementById('retireYears').value)||1)),inflation=Math.max(0,Math.min(100,Number(document.getElementById('retireInflation').value)||0))/100,withdrawal=Math.max(.1,Math.min(20,Number(document.getElementById('retireWithdrawal').value)||4))/100;
+ const futureMonthly=expense*Math.pow(1+inflation,years),corpus=futureMonthly*12/withdrawal;
+ document.getElementById('retireResult').textContent='Illustrative monthly expenses at retirement: '+money(futureMonthly,data.settings.base)+'. Illustrative target corpus: '+money(corpus,data.settings.base)+'. Assumes the selected withdrawal rate and constant inflation; excludes taxes, fees and investment volatility.';
+}
+function calculatePlanningDepreciation(){
+ const value=Math.max(0,Number(document.getElementById('depreciationValue').value)||0),rate=Math.max(0,Math.min(100,Number(document.getElementById('depreciationRate').value)||0))/100,years=Math.max(0,Math.min(100,Number(document.getElementById('depreciationYears').value)||0)),future=value*Math.pow(1-rate,years);
+ document.getElementById('depreciationResult').textContent='Estimated value after '+years+' years: '+money(future,data.settings.base)+'. Estimated reduction: '+money(value-future,data.settings.base)+'. This is a straight percentage-reduction scenario, not a valuation.';
 }
 function calculatePlanningInvest(){
  const principal=Math.max(0,Number(document.getElementById('calcPrincipal').value)||0),monthly=Math.max(0,Number(document.getElementById('planningCalcMonthly').value)||0),annual=Math.max(0,Math.min(100,Number(document.getElementById('calcRate').value)||0))/100,years=Math.max(1,Math.min(80,Math.floor(Number(document.getElementById('calcYears').value)||1))),n=years*12,r=annual/12;
