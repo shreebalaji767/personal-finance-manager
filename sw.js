@@ -1,10 +1,12 @@
-const CACHE = 'ledger-static-v18';
+const CACHE = 'ledger-static-v19';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon.svg',
-  './logo.svg'
+  './logo.svg',
+  './three-scene.js',
+  './vendor/three.module.js'
 ];
 
 self.addEventListener('install', event => {
