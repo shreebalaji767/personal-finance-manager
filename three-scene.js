@@ -1,5 +1,3 @@
-import * as THREE from './vendor/three.module.js';
-
 (() => {
   const host = document.querySelector('.hero-art');
   if (!host || !('WebGLRenderingContext' in window)) return;
@@ -88,6 +86,7 @@ import * as THREE from './vendor/three.module.js';
     const dot = makeMesh(new THREE.SphereGeometry(0.018 + (i % 3) * 0.008, 8, 6), i % 3 === 0 ? green : pale,
       [((i * 37) % 53) / 15 - 1.75, ((i * 19) % 37) / 13 - 1.35, -0.7 - (i % 4) * 0.2], starField);
     dot.userData.phase = i * 0.7;
+    dot.userData.baseY = dot.position.y;
   }
 
   let width = 1;
@@ -129,7 +128,7 @@ import * as THREE from './vendor/three.module.js';
       object.position.y = base.y + Math.sin(elapsed * 1.05 + index * 1.8) * 0.12;
     });
     starField.children.forEach((dot) => {
-      dot.position.y += Math.sin(elapsed + dot.userData.phase) * 0.0007;
+      dot.position.y = dot.userData.baseY + Math.sin(elapsed + dot.userData.phase) * 0.035;
     });
     draw();
   };
