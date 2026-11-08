@@ -151,8 +151,12 @@
   }, { passive: true });
   host.addEventListener('pointerleave', () => { targetX = 0; targetY = 0; }, { passive: true });
 
-  const observer = new IntersectionObserver((entries) => setActive(entries[0].isIntersecting), { threshold: 0.05 });
-  observer.observe(host);
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => setActive(entries[0].isIntersecting), { threshold: 0.05 });
+    observer.observe(host);
+  } else {
+    setActive(true);
+  }
   document.addEventListener('visibilitychange', () => setActive(visible));
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
   else window.addEventListener('resize', resize, { passive: true });
