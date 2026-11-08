@@ -62,5 +62,11 @@ assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
 assert.match(worker, /ledger-static-v15/, 'Finance Studio assets must use a refreshed offline cache');
+assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
+assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
+assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
+assert.match(html, /function toggleSidebar\(/, 'Sidebar must have a shared toggle handler');
+assert.match(html, /prefers-reduced-motion:reduce/, 'Navigation transitions must respect reduced-motion preferences');
+assert.match(html, /\.nav button\.active/, 'Navigation must have a distinct active-page state');
 
 console.log('Ledger regression checks passed.');
