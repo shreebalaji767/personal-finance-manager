@@ -16,10 +16,16 @@ assert.doesNotThrow(() => new Function(appScript), 'Inline application JavaScrip
 assert.doesNotThrow(() => new Function(worker), 'Service worker JavaScript must parse');
 const threeScene = read('three-scene.js');
 const tutorialScene = read('tutorial-scene.js');
+const formAccessibility = read('form-accessibility.js');
 const threeRuntime = read('vendor/three.min.js');
 assert.doesNotThrow(() => new Function(threeRuntime), 'Bundled Three.js runtime must parse');
 assert.doesNotThrow(() => new Function(threeScene), 'Three.js scene JavaScript must parse');
 assert.doesNotThrow(() => new Function(tutorialScene), '3D tutorial JavaScript must parse');
+assert.doesNotThrow(() => new Function(formAccessibility), 'Form accessibility helper must parse');
+assert.ok(html.includes('<script src="./form-accessibility.js" defer></script>'), 'Form accessibility helper must load');
+assert.match(worker, /form-accessibility\\.js/, 'Form accessibility helper must be cached offline');
+assert.ok(formAccessibility.includes('label.htmlFor=control.id'), 'Unassociated labels must be linked to controls');
+assert.ok(formAccessibility.includes('new MutationObserver'), 'Dynamically created forms must be handled');
 assert.ok(html.includes('id="ledgerTour"'), 'Landing page must include the guided 3D tutorial');
 assert.ok(html.includes('id="watchTour"'), 'Landing page must link to the tutorial');
 assert.ok(html.includes('<script src="./tutorial-scene.js"></script>'), 'Tutorial script must load locally');
@@ -78,7 +84,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v20/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v21/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -94,7 +100,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v20/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v21/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
