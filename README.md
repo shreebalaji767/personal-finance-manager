@@ -138,7 +138,7 @@ All financial data is stored in this browser using localStorage. Nothing is uplo
 
 ## Three.js 3D visual layer
 
-- The landing-page hero includes an animated 3D finance illustration built with **Three.js r159** (MIT-licensed), using locally hosted files in `vendor/three.module.js` and `three-scene.js`.
+- The landing-page hero includes an animated 3D finance illustration built with **Three.js r159** (MIT-licensed), using locally hosted files in `vendor/three.min.js` and `three-scene.js`.
 - The scene uses lightweight geometric objects, gentle floating/rotation, subtle pointer response, and responsive rendering. It pauses when the hero is off-screen or the tab is hidden, and caps device pixel ratio to reduce GPU load.
 - The scene is decorative only. It does not read, change, or calculate financial records, and all controls and finance features remain normal HTML/CSS/JavaScript.
 - WebGL failures and unsupported devices keep the original illustration visible. The scene is disabled for users who request reduced motion.
