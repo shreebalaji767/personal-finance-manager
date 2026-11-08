@@ -143,3 +143,12 @@ All financial data is stored in this browser using localStorage. Nothing is uplo
 - The scene is decorative only. It does not read, change, or calculate financial records, and all controls and finance features remain normal HTML/CSS/JavaScript.
 - WebGL failures and unsupported devices keep the original illustration visible. The scene is disabled for users who request reduced motion.
 - The Three.js library is stored in this repository and added to the service-worker app shell, so no runtime CDN, API, account, subscription, or external service is required. The service-worker cache version is bumped when these assets change.
+
+
+## Guided 3D walkthrough
+
+- The landing page includes an autoplaying, eight-scene Three.js walkthrough: dashboard, accounts, transactions, budgets, savings goals, bills and loans, reports, and backups.
+- Use **Back**, **Next**, **Pause/Play**, or the numbered scene buttons to explore at your own pace. The tutorial is a visual guide; it does not create sample transactions or modify your ledger.
+- The 3D scene uses the locally bundled Three.js runtime. It has no CDN, network calls, external video hosting, analytics, or paid services.
+- The animation pauses when it is off-screen or the browser tab is hidden. It uses a reduced-motion-friendly manual mode, responsive sizing, and a text explanation for every scene. WebGL failures leave the written walkthrough and controls available.
+- The service-worker cache is bumped to `ledger-static-v20` so the new tutorial script is available offline after the updated app shell is installed.
