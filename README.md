@@ -23,6 +23,24 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 - **Offline app shell:** The service worker caches the app shell, manifest and logo so the interface can open offline after it has been loaded once. Offline availability depends on the browser retaining its cache; keep JSON backups of important records.
 
 
+
+## Planning & household tools
+
+The **Planning & tools** workspace adds local-only utilities without changing the static architecture:
+
+- **Transaction templates:** save common income/expense details and open a prefilled transaction form. Templates are optional and start empty.
+- **Financial journal:** keep dated notes, milestones, decisions and reviews. Notes are stored locally and included in normal backups.
+- **Household settlements:** record who paid whom, with date, amount, currency and a note. This is a ledger of settlements, not automatic bank transfers.
+- **Account reconciliation:** compare the app-calculated account balance with a manually entered statement closing balance and retain dated comparisons.
+- **Savings goal forecasts:** estimate the monthly amount needed to reach a goal by its target date.
+- **Bill reminders:** optionally request browser notification permission for unpaid bills due in the next seven days. Checks happen only while Ledger is open or focused; there is no background push service.
+- **Investment projection:** calculate a hypothetical monthly contribution / compounding scenario using assumptions entered by the user.
+- **Loan prepayment comparison:** compare estimated payoff time and interest with and without an extra monthly payment, assuming a fixed rate and monthly payments.
+- **Storage monitor:** show an approximate localStorage footprint and, where supported, the browser's origin storage estimate.
+- **Budget rollover:** enable on each budget to carry forward positive unused allowance from the previous calendar month. It never carries a negative balance.
+
+Calculators are illustrative and do not make investment, interest-rate, tax or inflation predictions. Browser notifications are optional and can be disabled in browser site settings. No external service is contacted.
+
 ## Search engine metadata
 
 - Search identity is configured in the HTML title, description, Open Graph metadata, social preview metadata and structured data. The visible product branding throughout the app remains **Ledger**.
