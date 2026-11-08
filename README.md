@@ -67,6 +67,21 @@ A vanilla HTML/CSS/JavaScript personal finance application designed for GitHub P
 
 All calculations use only the records and manual exchange rates saved in this browser. Forecasts and scores can be incomplete when records are missing. No bank connection, live exchange-rate API, analytics, cloud sync or automatic financial advice is used.
 
+
+## Finance Studio — seven-stage local upgrades
+
+Open **Finance Studio** from the workspace navigation. It adds these tools without connecting to a bank or uploading data:
+
+- **Financial intelligence:** all-time income/expense totals, category spending breakdowns and a review list for unusually large expenses. Category suggestions in CSV import use simple local keyword rules; they are not machine-learning predictions.
+- **Advanced budgeting:** use the existing Budgets page for category limits and threshold warnings. Finance Studio adds custom income and expense categories, which become available in transaction forms after saving.
+- **Investments and net worth:** use Assets & investments for manual asset records and valuation; Finance Studio provides a quick valuation update for an existing asset. No market-price feed is used.
+- **Banking and accounts:** import a CSV statement into an account you select. The preview checks dates and amounts, and possible duplicates are skipped. Expected columns: `date,description,amount,type,category`; accepted type values include income/credit/deposit and expense/debit/withdrawal. Review the preview before importing. This is append-only; it does not silently reconcile or overwrite balances.
+- **Family finance:** transaction summaries are grouped by the family member already assigned to each transaction. Add members in Family and select them in transaction forms.
+- **Bills and planning:** track subscriptions and renewal dates, and create named financial plans with target amounts and dates. These do not initiate payments or automatically move money.
+- **Reports and usability:** view monthly income/expense/net summaries, export a monthly analysis CSV, and use the browser print dialog to save the visible report as PDF.
+
+Additional records are stored inside the existing Ledger local data model and included in JSON and encrypted backups. Existing data is retained; new subscriptions, custom categories and plans start empty. CSV text is processed locally. There is no direct bank login, PDF statement extraction, automatic synchronisation or live market quotes.
+
 ## Reliability checks
 
 - Every GitHub Pages deployment now waits for a dependency-free regression check using Node.js 22. The check parses the application and service-worker JavaScript, verifies unique HTML IDs and click handlers, checks the PWA manifest and offline app-shell files, and protects the blank-first-launch and single-Quick-Add requirements.
