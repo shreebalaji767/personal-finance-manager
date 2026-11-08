@@ -9,11 +9,18 @@ const worker = read('sw.js');
 const manifest = JSON.parse(read('manifest.webmanifest'));
 
 const scriptStart = html.lastIndexOf('<script>');
-const scriptEnd = html.lastIndexOf('</script>');
+const scriptEnd = html.indexOf('</script>', scriptStart);
 assert.ok(scriptStart >= 0 && scriptEnd > scriptStart, 'The application script must exist');
 const appScript = html.slice(scriptStart + '<script>'.length, scriptEnd);
 assert.doesNotThrow(() => new Function(appScript), 'Inline application JavaScript must parse');
 assert.doesNotThrow(() => new Function(worker), 'Service worker JavaScript must parse');
+const threeScene = read('three-scene.js');
+assert.doesNotThrow(() => new Function(threeScene), 'Three.js scene JavaScript must parse');
+assert.ok(fs.existsSync(path.join(root, 'vendor/three.min.js')), 'The local Three.js runtime must be bundled');
+assert.match(html, /<script src="\.\/vendor\/three\.min\.js"><\/script>/, 'Three.js must load from the local bundle');
+assert.match(html, /<script src="\.\/three-scene\.js"><\/script>/, 'The 3D scene script must be included');
+assert.match(worker, /\.\/three-scene\.js/);
+assert.match(worker, /\.\/vendor\/three\.min\.js/);
 
 const ids = [...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]);
 const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -61,7 +68,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v18/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v19/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -77,9 +84,13 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v18/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v19/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
 
 console.log('Ledger regression checks passed.');
+
+assert.match(threeScene, /prefers-reduced-motion/ , 'The 3D scene must respect reduced motion');
+assert.match(threeScene, /IntersectionObserver/, 'The 3D scene must pause outside the viewport');
+assert.doesNotMatch(threeScene, /https?:\/\//, 'The 3D scene must not depend on a runtime CDN');
