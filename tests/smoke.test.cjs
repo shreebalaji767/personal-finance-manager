@@ -56,4 +56,11 @@ assert.match(appScript, /beforeinstallprompt/, 'Custom PWA install handling must
 assert.match(appScript, /function normaliseData/, 'Backup and stored data must pass through validation');
 assert.match(appScript, /localMonthKey/, 'Calendar month calculations must use local time');
 
+
+assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist');
+assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
+for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
+for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
+assert.match(worker, /ledger-static-v15/, 'Finance Studio assets must use a refreshed offline cache');
+
 console.log('Ledger regression checks passed.');
