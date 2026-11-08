@@ -19,7 +19,9 @@ function runStep(){if(!ready)return;try{const w=frame.contentWindow;steps[curren
 function next(){stop();if(current<steps.length-1)current++;else{restart();return}runStep()}
 function previous(){stop();if(current>0)current--;runStep()}
 function restart(){stop();current=0;frame.src='./index.html?guidedDemo=1#app/dashboard';ready=false;update()}
-function onFrameReady(){try{const w=frame.contentWindow;if(!w||!w.document.getElementById('nav'))return;ready=true;current=0;runStep()}catch(e){ready=false}}\nframe.addEventListener('load',onFrameReady);\ntry{if(frame.contentDocument&&frame.contentDocument.readyState==='complete')onFrameReady()}catch(e){}
+function onFrameReady(){try{const w=frame.contentWindow;if(!w||!w.document.getElementById('nav'))return;ready=true;current=0;runStep()}catch(e){ready=false}}
+frame.addEventListener('load',onFrameReady);
+try{if(frame.contentDocument&&frame.contentDocument.readyState==='complete')onFrameReady()}catch(e){}
 $('workflowNext').addEventListener('click',next);$('workflowPrev').addEventListener('click',previous);$('workflowRestart').addEventListener('click',restart);
 $('workflowPlay').addEventListener('click',()=>{if(!ready)return;if(playing){stop();return}playing=true;$('workflowPlay').textContent='Ⅱ Pause';runStep();timer=setInterval(()=>{if(current>=steps.length-1){stop();return}current++;runStep()},5200)});
 update();

@@ -23,7 +23,7 @@ assert.doesNotThrow(() => new Function(threeScene), 'Three.js scene JavaScript m
 assert.doesNotThrow(() => new Function(tutorialScene), '3D tutorial JavaScript must parse');
 assert.doesNotThrow(() => new Function(formAccessibility), 'Form accessibility helper must parse');
 assert.ok(html.includes('<script src="./form-accessibility.js" defer></script>'), 'Form accessibility helper must load');
-assert.match(worker, /form-accessibility\\.js/, 'Form accessibility helper must be cached offline');
+assert.match(worker, /form-accessibility\.js/, 'Form accessibility helper must be cached offline');
 assert.ok(formAccessibility.includes('label.htmlFor=control.id'), 'Unassociated labels must be linked to controls');
 assert.ok(formAccessibility.includes('new MutationObserver'), 'Dynamically created forms must be handled');
 assert.ok(html.includes('id="ledgerTour"'), 'Landing page must include the guided 3D tutorial');
@@ -34,7 +34,7 @@ assert.match(appScript, /const DEMO_MODE=.*guidedDemo/, 'Demo mode must be expli
 assert.match(appScript, /if\(DEMO_MODE\)\{render\(\);return true\}/, 'Demo saves must never write to persistent storage');
 const workflowDemo = read('workflow-demo.js');
 assert.doesNotThrow(() => new Function(workflowDemo), 'Guided workflow driver must parse');
-assert.match(worker, /workflow-demo\\.js/, 'Workflow driver must be cached offline');
+assert.match(worker, /workflow-demo\.js/, 'Workflow driver must be cached offline');
 assert.ok(html.includes('id="watchTour"'), 'Landing page must link to the tutorial');
 assert.ok(html.includes('<script src="./tutorial-scene.js"></script>'), 'Tutorial script must load locally');
 assert.match(worker, /\.\/tutorial-scene\.js/, 'Tutorial script must be in the offline app shell');
