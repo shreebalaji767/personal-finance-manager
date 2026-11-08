@@ -115,10 +115,10 @@ assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
 
 console.log('Ledger regression checks passed.');
 
-assert.match(threeScene, /!window\\.THREE/, 'The 3D scene must safely skip initialization if the runtime fails to load');
+assert.match(threeScene, /!window\.THREE/, 'The 3D scene must safely skip initialization if the runtime fails to load');
 assert.ok(html.includes('<script src="./vendor/three.min.js"></script>'), 'The local Three.js runtime must load before the hero scene');
 assert.ok(html.includes('<script src="./three-scene.js"></script>'), 'The hero 3D scene must load');
-assert.doesNotMatch(html, /<script src="\\.\\/tutorial-scene\\.js"><\\/script>/, 'The removed 3D tutorial scene must not load');
+assert.ok(!html.includes('<script src="./tutorial-scene.js"></script>'), 'The removed 3D tutorial scene must not load');
 assert.match(threeScene, /prefers-reduced-motion/ , 'The 3D scene must respect reduced motion');
 assert.match(threeScene, /IntersectionObserver/, 'The 3D scene must pause outside the viewport');
 assert.doesNotMatch(threeScene, /https?:\/\//, 'The 3D scene must not depend on a runtime CDN');
