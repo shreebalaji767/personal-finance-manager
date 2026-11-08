@@ -36,6 +36,8 @@ The **Planning & tools** workspace adds local-only utilities without changing th
 - **Bill reminders:** optionally request browser notification permission for unpaid bills due in the next seven days. Checks happen only while Ledger is open or focused; there is no background push service.
 - **Investment projection:** calculate a hypothetical monthly contribution / compounding scenario using assumptions entered by the user.
 - **Loan prepayment comparison:** compare estimated payoff time and interest with and without an extra monthly payment, assuming a fixed rate and monthly payments.
+- **Retirement corpus scenario:** estimate a future monthly expense and illustrative corpus from user-entered inflation, years and withdrawal-rate assumptions.
+- **Asset depreciation scenario:** estimate a future asset value using a constant annual depreciation assumption.
 - **Storage monitor:** show an approximate localStorage footprint and, where supported, the browser's origin storage estimate.
 - **Budget rollover:** enable on each budget to carry forward positive unused allowance from the previous calendar month. It never carries a negative balance.
 
