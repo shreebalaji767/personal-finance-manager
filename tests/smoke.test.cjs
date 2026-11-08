@@ -15,6 +15,8 @@ const appScript = html.slice(scriptStart + '<script>'.length, scriptEnd);
 assert.doesNotThrow(() => new Function(appScript), 'Inline application JavaScript must parse');
 assert.doesNotThrow(() => new Function(worker), 'Service worker JavaScript must parse');
 const threeScene = read('three-scene.js');
+const threeRuntime = read('vendor/three.min.js');
+assert.doesNotThrow(() => new Function(threeRuntime), 'Bundled Three.js runtime must parse');
 assert.doesNotThrow(() => new Function(threeScene), 'Three.js scene JavaScript must parse');
 assert.ok(fs.existsSync(path.join(root, 'vendor/three.min.js')), 'The local Three.js runtime must be bundled');
 assert.match(html, /<script src="\.\/vendor\/three\.min\.js"><\/script>/, 'Three.js must load from the local bundle');
