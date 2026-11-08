@@ -1,4 +1,4 @@
-const CACHE = 'ledger-static-v22';
+const CACHE = 'ledger-static-v23';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,7 +6,6 @@ const APP_SHELL = [
   './icon.svg',
   './logo.svg',
   './three-scene.js',
-  './tutorial-scene.js',
   './form-accessibility.js',
   './workflow-demo.js',
   './vendor/three.min.js'
