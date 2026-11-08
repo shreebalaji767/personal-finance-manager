@@ -6,7 +6,7 @@ const APP_SHELL = [
   './icon.svg',
   './logo.svg',
   './three-scene.js',
-  './vendor/three.module.js'
+  './vendor/three.min.js'
 ];
 
 self.addEventListener('install', event => {
