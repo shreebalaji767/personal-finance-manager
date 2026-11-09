@@ -178,7 +178,7 @@ assert.equal(dataTools.normaliseData(invalidReceipt), null, 'Imported receipts m
 const malformedTrash = JSON.parse(JSON.stringify(fixture));
 malformedTrash.trash.push({id:'trash_test',kind:'transactions',item:{id:"unsafe'handler"}});
 assert.equal(dataTools.normaliseData(malformedTrash), null, 'Recycle-bin entries must not smuggle unsafe restored IDs');
-assert.match(appScript, /const candidate=JSON\\.parse\\(JSON\\.stringify\\(data\\)\\);candidate\\[x\\.kind\\]\\.push\\(x\\.item\\);const clean=normaliseData\\(candidate\\)/, 'Recycle-bin restores must validate the candidate ledger before changing it');
-assert.match(appScript, /file\\.size>25\\*1024\\*1024/, 'Oversized backup imports must be rejected before parsing');
-assert.match(appScript, /item\\.receipt\\.length>700000/, 'Oversized imported receipt payloads must be rejected');
-assert.match(appScript, /currencyOptions\\(currency\\)/, 'Exchange-rate options must be built from a non-base currency');
+assert.ok(appScript.includes("const candidate=JSON.parse(JSON.stringify(data));candidate[x.kind].push(x.item);const clean=normaliseData(candidate)"), 'Recycle-bin restores must validate the candidate ledger before changing it');
+assert.ok(appScript.includes("file.size>25*1024*1024"), 'Oversized backup imports must be rejected before parsing');
+assert.ok(appScript.includes("item.receipt.length>700000"), 'Oversized imported receipt payloads must be rejected');
+assert.ok(appScript.includes("currencyOptions(currency)"), 'Exchange-rate options must be built from a non-base currency');
