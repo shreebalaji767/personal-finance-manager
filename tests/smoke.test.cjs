@@ -128,7 +128,7 @@ assert.match(appScript, /const validDate=v=>/, 'Imported dates must be validated
 assert.match(appScript, /if\(!save\(\)\)return;alert\('Backup imported successfully\.'\)/, 'Import must not report success when persistence fails');
 assert.match(appScript, /normaliseData\(JSON\.parse\(target\.data\)\)/, 'Recovery snapshots must be validated before restore');
 assert.match(appScript, /const v=convert\(t\.amount,t\.currency\)/, 'Calendar totals must convert transaction currencies');
-assert.match(appScript, /t\.account===account&&t\.currency===/, 'CSV duplicate checks must include account and currency');
+assert.ok(appScript.includes("t.type,t.account,t.currency"), 'CSV duplicate checks must include transaction type, account and currency');
 assert.doesNotMatch(html.slice(0, html.indexOf('<body')), /blssnvj21/, 'Metadata must use Ledger branding');
 
 assert.match(appScript, /function renderFxWarning\(/, 'Missing currency rates must be shown globally');
