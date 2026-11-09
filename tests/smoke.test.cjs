@@ -184,7 +184,7 @@ assert.ok(appScript.includes("item.receipt.length>700000"), 'Oversized imported 
 assert.ok(appScript.includes("currencyOptions(currency)"), 'Exchange-rate options must be built from a non-base currency');
 
 
-const guessCategorySource = appScript.match(/function studioGuessCategory\(description,type\)\{[^\n]+\}/)?.[0];
+const guessCategorySource = appScript.match(/function studioGuessCategory\(description,type\)\{[\s\S]*?\n\}/)?.[0];
 const csvParserSource = appScript.match(/function studioParseCSV\(src\)\{[\s\S]*?\n\}/)?.[0];
 assert.ok(guessCategorySource && csvParserSource, 'CSV category and parser functions must be available for functional tests');
 const parseCSV = vm.runInNewContext(guessCategorySource + ';' + studioDateSource + ';' + csvParserSource + ';studioParseCSV');
