@@ -204,6 +204,6 @@ assert.ok(appScript.includes("if(!save())return;alert('Statement balance saved")
 assert.ok(appScript.includes("data.members.some(m=>m.name.toLowerCase()===v.name.toLowerCase())"), 'Family member names must be unique ignoring case');
 
 assert.ok(appScript.includes("const prevKey=localMonthKey(prevDate)"), 'Month comparisons must use local calendar dates, not UTC conversion');
-assert.doesNotMatch(appScript, /prevDate\\.toISOString\\(\\)\\.slice\\(0,10\\)/, 'Previous-month calculations must not shift months in positive UTC offsets');
+assert.ok(!appScript.includes("prevDate.toISOString().slice(0,10)"), 'Previous-month calculations must not shift months in positive UTC offsets');
 assert.ok(appScript.includes("typeof t.id==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(t.id)"), 'Local template IDs must be validated before inline actions use them');
 assert.ok(appScript.includes("if(Array.isArray(saved))history=saved.filter(x=>x&&typeof x.date==='string'&&Number.isFinite(Number(x.value)))"), 'Corrupt net-worth history must not break rendering');
