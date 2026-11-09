@@ -219,7 +219,7 @@ assert.ok(appScript.includes("try{if(!crypto.subtle)throw Error('Web Crypto is u
 // Service-worker offline paths must always resolve with a Response, never reject.
 assert.match(worker, /function offlineResponse\\(request\\)/, 'Offline fetches must have a controlled fallback response');
 assert.match(worker, /catch\\(networkError\\)[\\s\\S]*?return cached \\|\\| offlineResponse\\(request\\)/, 'Navigation failures must fall back to the cached app shell');
-assert.match(worker, /utm_\\[a-z0-9_\\]\\+/, 'Tracking query parameters must not fragment static asset cache keys');
+assert.ok(worker.includes("utm_[a-z0-9_]+"), 'Tracking query parameters must not fragment static asset cache keys');
 assert.match(worker, /return cached \\|\\| offlineResponse\\(request\\)/, 'Missing offline assets must return a controlled response');
 
 async function verifyServiceWorkerOfflineFallbacks() {
