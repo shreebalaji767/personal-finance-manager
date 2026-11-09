@@ -563,12 +563,6 @@ function studioParseCSV(src){
   return {line:i+2,date,description,amount,type,category,valid:!!date&&Number.isFinite(amount)&&amount>0};
  });
 }
- const rows=[];let row=[],cell='',q=false;src=String(src||'').replace(/^\uFEFF/,'');
- for(let i=0;i<src.length;i++){const c=src[i];if(c==='"'&&q&&src[i+1]==='"'){cell+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){row.push(cell.trim());cell=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&src[i+1]==='\n')i++;row.push(cell.trim());if(row.some(x=>x))rows.push(row);row=[];cell=''}else cell+=c}
- row.push(cell.trim());if(row.some(x=>x))rows.push(row);if(!rows.length)return [];
- const h=rows.shift().map(x=>x.toLowerCase().replace(/[ _-]+/g,'')),ix=a=>h.findIndex(x=>a.includes(x)),col={date:ix(['date','transactiondate','valuedate']),desc:ix(['description','narration','details','merchant','name','particulars']),amount:ix(['amount','debit','credit','withdrawal','deposit']),type:ix(['type','transactiontype','drcr']),category:ix(['category'])};
- return rows.map((r,i)=>{const raw=r[col.amount]||'',num=Number(String(raw).replace(/[₹$,]/g,'').replace(/\s/g,''));let type=String(r[col.type]||'').toLowerCase();type=['cr','credit','deposit','income'].includes(type)?'income':'expense';const date=studioDate(r[col.date]),description=r[col.desc]||'Imported transaction';return {line:i+2,date,description,amount:Math.abs(num),type,category:(r[col.category]||'').trim()||studioGuessCategory(description,type),valid:!!date&&Number.isFinite(num)&&num!==0}})
-}
 function previewStudioCSV(){
  try{
   studioCsvRows=studioParseCSV(document.getElementById('studioCsv').value);
