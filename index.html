@@ -374,14 +374,21 @@ function installApp(){
  }
  const promptEvent=deferredInstallPrompt;
  deferredInstallPrompt=null;
- promptEvent.prompt();
- promptEvent.userChoice.then(choice=>{
-  document.querySelectorAll('.install-button').forEach(button=>{
-   button.textContent=choice&&choice.outcome==='accepted'?'Installing…':'Install Ledger';
+ try {
+  // prompt() is invoked directly inside the user's click handler as required by Chromium.
+  promptEvent.prompt();
+  Promise.resolve(promptEvent.userChoice).then(choice=>{
+   document.querySelectorAll('.install-button').forEach(button=>{
+    button.textContent=choice&&choice.outcome==='accepted'?'Installing…':'Install Ledger';
+   });
+  }).catch(()=>{
+   document.querySelectorAll('.install-button').forEach(button=>button.textContent='Install Ledger');
+   alert('The install prompt could not be opened. Use your browser menu and choose “Install app” instead.');
   });
- }).catch(()=>{
+ } catch(error) {
   document.querySelectorAll('.install-button').forEach(button=>button.textContent='Install Ledger');
- });
+  alert('The install prompt is no longer available. Reload Ledger or use your browser menu to install it.');
+ }
 }
 window.addEventListener('beforeinstallprompt',event=>{
  // Keep the browser's install prompt for the explicit Ledger install-button click.
