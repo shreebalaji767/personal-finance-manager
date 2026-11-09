@@ -129,3 +129,7 @@ assert.match(appScript, /normaliseData\(JSON\.parse\(target\.data\)\)/, 'Recover
 assert.match(appScript, /const v=convert\(t\.amount,t\.currency\)/, 'Calendar totals must convert transaction currencies');
 assert.match(appScript, /t\.account===account&&t\.currency===/, 'CSV duplicate checks must include account and currency');
 assert.doesNotMatch(html.slice(0, html.indexOf('<body')), /blssnvj21/, 'Metadata must use Ledger branding');
+
+assert.match(appScript, /function renderFxWarning\(/, 'Missing currency rates must be shown globally');
+assert.match(appScript, /data-filter-member/, 'Family-member names must not be inserted into inline JavaScript handlers');
+assert.match(appScript, /if\(!save\(\)\)return;alert\('Preferences saved\./, 'Settings must not claim success when storage fails');
