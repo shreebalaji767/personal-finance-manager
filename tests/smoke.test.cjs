@@ -91,7 +91,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v29/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v30/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -107,7 +107,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v29/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v30/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
@@ -210,3 +210,7 @@ assert.ok(appScript.includes("if(Array.isArray(saved))history=saved.filter(x=>x&
 
 assert.ok(appScript.includes("if(!data.accounts.length){alert('Add an account before recording a transaction.')"), 'Transactions must not be saved without a valid account');
 assert.ok(appScript.includes('<select name="account" required>'), 'Transaction account selection must be mandatory');
+
+assert.ok(appScript.includes("let hasPin=false,unlocked=false;try{hasPin=!!localStorage.getItem(PIN_KEY)"), 'PIN startup checks must not crash when browser storage is blocked');
+assert.ok(appScript.includes("try{localStorage.setItem(THEME_KEY"), 'Theme changes must handle storage failures');
+assert.ok(appScript.includes("try{if(!crypto.subtle)throw Error('Web Crypto is unavailable in this browser.')"), 'PIN controls must report unsupported Web Crypto instead of failing silently');
