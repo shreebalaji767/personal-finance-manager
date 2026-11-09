@@ -61,7 +61,7 @@ for (const match of html.matchAll(/\bonclick=["']\s*([\w$]+)\s*\(/gi)) {
 assert.equal((html.match(/\bid=["']quickAdd["']/g) || []).length, 1, 'There must be exactly one global Quick Add button');
 assert.doesNotMatch(html, /id=["']floatingQuickAdd["']/, 'The duplicate floating Quick Add must remain removed');
 assert.doesNotMatch(html.slice(html.indexOf('<body')), /blssnvj21/, 'SEO keyword must not appear in visible page markup');
-assert.match(html.slice(0, html.indexOf('<body')), /<title>Ledger — Personal Finance Manager<\\/title>/, 'Ledger branding must be used in metadata');
+assert.ok(html.slice(0, html.indexOf('<body')).includes('<title>Ledger — Personal Finance Manager</title>'), 'Ledger branding must be used in metadata');
 
 const seedMatch = appScript.match(/const seed=\(\)=>\(\{([\s\S]*?)\}\);/);
 assert.ok(seedMatch, 'A default data model must exist');
