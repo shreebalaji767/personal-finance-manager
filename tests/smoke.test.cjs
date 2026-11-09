@@ -182,3 +182,18 @@ assert.ok(appScript.includes("const candidate=JSON.parse(JSON.stringify(data));c
 assert.ok(appScript.includes("file.size>25*1024*1024"), 'Oversized backup imports must be rejected before parsing');
 assert.ok(appScript.includes("item.receipt.length>700000"), 'Oversized imported receipt payloads must be rejected');
 assert.ok(appScript.includes("currencyOptions(currency)"), 'Exchange-rate options must be built from a non-base currency');
+
+
+const guessCategorySource = appScript.match(/function studioGuessCategory\(description,type\)\{[^\n]+\}/)?.[0];
+const csvParserSource = appScript.match(/function studioParseCSV\(src\)\{[\s\S]*?\n\}/)?.[0];
+assert.ok(guessCategorySource && csvParserSource, 'CSV category and parser functions must be available for functional tests');
+const parseCSV = vm.runInNewContext(guessCategorySource + ';' + studioDateSource + ';' + csvParserSource + ';studioParseCSV');
+const bankRows = parseCSV('Date,Narration,Debit,Credit,Category\n2026-11-01,"Grocery, market",1200,,Food & groceries\n2026-11-02,Salary,,50000,Salary');
+assert.equal(bankRows.length, 2, 'CSV parser must preserve every data row');
+assert.equal(bankRows[0].description, 'Grocery, market', 'Quoted commas must stay inside the description');
+assert.equal(bankRows[0].type, 'expense', 'Separate debit columns must become expenses');
+assert.equal(bankRows[0].amount, 1200, 'Debit amounts must be parsed correctly');
+assert.equal(bankRows[1].type, 'income', 'Separate credit columns must become income');
+assert.equal(bankRows[1].amount, 50000, 'Credit amounts must be parsed correctly');
+assert.throws(() => parseCSV('date,description,amount,type\n2026-11-01,"unfinished,12,expense'), /unclosed quoted field/i, 'Malformed quoted CSV must be rejected');
+assert.match(appScript, /const seen=new Set\\(data\\.transactions\\.map\\(keyOf\\)\\)/, 'CSV import must detect duplicates within the same file as well as existing records');
