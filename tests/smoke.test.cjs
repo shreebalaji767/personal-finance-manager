@@ -164,10 +164,10 @@ assert.equal(studioDate('03/04/2026'), '', 'Ambiguous slash dates must not be si
 assert.equal(studioDate('31/03/2026'), '2026-03-31', 'Unambiguous day-first CSV dates must be normalised');
 
 assert.doesNotMatch(appScript, /\$\{esc\(m\.name\)\}|\$\{esc\(m\.id\)\}/, 'Family action attributes must interpolate actual member values');
-assert.match(appScript, /t\.note\+' '\\+\\(t\\.member\\|\\|''\\)/, 'Transaction search must include the assigned family member');
+assert.ok(appScript.includes("t.note+' '+(t.member||'')"), 'Transaction search must include the assigned family member');
 assert.match(appScript, /The base currency rate is fixed at 1/, 'The exchange-rate editor must protect the base currency');
-assert.match(appScript, /for\\(const key of Object\\.keys\\(data\\)\\)if\\(Array\\.isArray\\(data\\[key\\]\\)\\)data\\[key\\]=\\[\\]/, 'Clear all records must clear every record collection');
-assert.match(appScript, /TEMPLATE_KEY,THEME_KEY,PIN_KEY,'ledger\\.finance\\.networth\\.v1'/, 'Erase all must clear app-owned preferences and local history');
-assert.match(workflowDemo, /new w\\.Event\\('change'\\)/, 'Guided demo events must be created in the iframe window realm');
+assert.ok(appScript.includes("for(const key of Object.keys(data))if(Array.isArray(data[key]))data[key]=[]"), 'Clear all records must clear every record collection');
+assert.ok(appScript.includes("TEMPLATE_KEY,THEME_KEY,PIN_KEY,'ledger.finance.networth.v1'"), 'Erase all must clear app-owned preferences and local history');
+assert.ok(workflowDemo.includes("new w.Event('change')"), 'Guided demo events must be created in the iframe window realm');
 assert.match(workflowDemo, /const dateAfter=days=>/, 'Guided demo dates must use local calendar dates');
-assert.doesNotMatch(workflowDemo, /toISOString\\(\\)\\.slice\\(0,10\\)/, 'Guided demo must not derive date-only values from UTC');
+assert.ok(!workflowDemo.includes("toISOString().slice(0,10)"), 'Guided demo must not derive date-only values from UTC');
