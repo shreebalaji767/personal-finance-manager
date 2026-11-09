@@ -171,3 +171,14 @@ assert.ok(appScript.includes("TEMPLATE_KEY,THEME_KEY,PIN_KEY,'ledger.finance.net
 assert.ok(workflowDemo.includes("new w.Event('change')"), 'Guided demo events must be created in the iframe window realm');
 assert.match(workflowDemo, /const dateAfter=days=>/, 'Guided demo dates must use local calendar dates');
 assert.ok(!workflowDemo.includes("toISOString().slice(0,10)"), 'Guided demo must not derive date-only values from UTC');
+
+const invalidReceipt = JSON.parse(JSON.stringify(fixture));
+invalidReceipt.transactions[0].receipt = 'https://tracking.example/pixel.png';
+assert.equal(dataTools.normaliseData(invalidReceipt), null, 'Imported receipts must be local image data, not remote tracking URLs');
+const malformedTrash = JSON.parse(JSON.stringify(fixture));
+malformedTrash.trash.push({id:'trash_test',kind:'transactions',item:{id:"unsafe'handler"}});
+assert.equal(dataTools.normaliseData(malformedTrash), null, 'Recycle-bin entries must not smuggle unsafe restored IDs');
+assert.match(appScript, /const candidate=JSON\\.parse\\(JSON\\.stringify\\(data\\)\\);candidate\\[x\\.kind\\]\\.push\\(x\\.item\\);const clean=normaliseData\\(candidate\\)/, 'Recycle-bin restores must validate the candidate ledger before changing it');
+assert.match(appScript, /file\\.size>25\\*1024\\*1024/, 'Oversized backup imports must be rejected before parsing');
+assert.match(appScript, /item\\.receipt\\.length>700000/, 'Oversized imported receipt payloads must be rejected');
+assert.match(appScript, /currencyOptions\\(currency\\)/, 'Exchange-rate options must be built from a non-base currency');
