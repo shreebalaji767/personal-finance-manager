@@ -1,4 +1,4 @@
-const CACHE = 'ledger-static-v27';
+const CACHE = 'ledger-static-v28';
 const APP_SHELL = [
   './',
   './index.html',
