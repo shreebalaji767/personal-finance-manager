@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const vm = require('node:vm');
 
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
@@ -90,7 +91,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v24/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v25/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -106,7 +107,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v24/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v25/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
@@ -133,3 +134,40 @@ assert.doesNotMatch(html.slice(0, html.indexOf('<body')), /blssnvj21/, 'Metadata
 assert.match(appScript, /function renderFxWarning\(/, 'Missing currency rates must be shown globally');
 assert.match(appScript, /data-filter-member/, 'Family-member names must not be inserted into inline JavaScript handlers');
 assert.match(appScript, /if\(!save\(\)\)return;alert\('Preferences saved\./, 'Settings must not claim success when storage fails');
+
+
+// Execute the data validator against real fixtures (not only source-text checks).
+const currencySource = appScript.match(/const CURRENCIES=\{[\s\S]*?\};/)?.[0];
+const seedSource = appScript.match(/const seed=\(\)=>\(\{[\s\S]*?\}\);/)?.[0];
+const normaliseSource = appScript.match(/function normaliseData\(x\)\{[\s\S]*?\n\}/)?.[0];
+assert.ok(currencySource && seedSource && normaliseSource, 'Currency, seed and normalisation functions must be extractable for functional tests');
+const dataTools = vm.runInNewContext(currencySource + ';' + seedSource + ';' + normaliseSource + ';({seed,normaliseData})');
+const fixture = dataTools.seed();
+fixture.accounts.push({id:'acct_test',name:'Test cash',type:'Cash',currency:'INR',opening:0});
+fixture.transactions.push({id:'tx_test',date:'2026-11-09',type:'expense',amount:125,description:'Test purchase',category:'Other',account:'acct_test',currency:'INR'});
+assert.ok(dataTools.normaliseData(fixture), 'A valid saved ledger with dated transactions must load');
+const impossibleDate = JSON.parse(JSON.stringify(fixture));
+impossibleDate.transactions[0].date = '2026-02-30';
+assert.equal(dataTools.normaliseData(impossibleDate), null, 'Impossible calendar dates must be rejected');
+const invalidLeapDay = JSON.parse(JSON.stringify(fixture));
+invalidLeapDay.transactions[0].date = '2025-02-29';
+assert.equal(dataTools.normaliseData(invalidLeapDay), null, 'Invalid leap days must be rejected');
+const nonUnitBase = JSON.parse(JSON.stringify(fixture));
+nonUnitBase.settings.rates.INR = 9;
+assert.equal(dataTools.normaliseData(nonUnitBase).settings.rates.INR, 1, 'The selected base currency rate must always equal one');
+
+const studioDateSource = appScript.match(/function studioDate\(v\)\{[^\n]+\}/)?.[0];
+assert.ok(studioDateSource, 'CSV date normaliser must exist');
+const studioDate = vm.runInNewContext(studioDateSource + ';studioDate');
+assert.equal(studioDate('2026-02-30'), '', 'CSV import must reject impossible ISO dates');
+assert.equal(studioDate('03/04/2026'), '', 'Ambiguous slash dates must not be silently misinterpreted');
+assert.equal(studioDate('31/03/2026'), '2026-03-31', 'Unambiguous day-first CSV dates must be normalised');
+
+assert.doesNotMatch(appScript, /\$\{esc\(m\.name\)\}|\$\{esc\(m\.id\)\}/, 'Family action attributes must interpolate actual member values');
+assert.match(appScript, /t\.note\+' '\\+\\(t\\.member\\|\\|''\\)/, 'Transaction search must include the assigned family member');
+assert.match(appScript, /The base currency rate is fixed at 1/, 'The exchange-rate editor must protect the base currency');
+assert.match(appScript, /for\\(const key of Object\\.keys\\(data\\)\\)if\\(Array\\.isArray\\(data\\[key\\]\\)\\)data\\[key\\]=\\[\\]/, 'Clear all records must clear every record collection');
+assert.match(appScript, /TEMPLATE_KEY,THEME_KEY,PIN_KEY,'ledger\\.finance\\.networth\\.v1'/, 'Erase all must clear app-owned preferences and local history');
+assert.match(workflowDemo, /new w\\.Event\\('change'\\)/, 'Guided demo events must be created in the iframe window realm');
+assert.match(workflowDemo, /const dateAfter=days=>/, 'Guided demo dates must use local calendar dates');
+assert.doesNotMatch(workflowDemo, /toISOString\\(\\)\\.slice\\(0,10\\)/, 'Guided demo must not derive date-only values from UTC');
