@@ -533,14 +533,60 @@ function studioGuessCategory(description,type){
 }
 function studioDate(v){v=String(v||'').trim();const iso=v.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(iso){const y=Number(iso[1]),m=Number(iso[2]),d=Number(iso[3]),check=new Date(y,m-1,d);return check.getFullYear()===y&&check.getMonth()===m-1&&check.getDate()===d?v:''}const slash=v.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/);if(slash){const a=Number(slash[1]),b=Number(slash[2]),y=Number(slash[3]);if(a>12&&b<=12){const d=new Date(y,b-1,a);return d.getFullYear()===y&&d.getMonth()===b-1&&d.getDate()===a?y+'-'+String(b).padStart(2,'0')+'-'+String(a).padStart(2,'0'):''}if(b>12&&a<=12){const d=new Date(y,a-1,b);return d.getFullYear()===y&&d.getMonth()===a-1&&d.getDate()===b?y+'-'+String(a).padStart(2,'0')+'-'+String(b).padStart(2,'0'):''}return ''}return ''}
 function studioParseCSV(src){
+ const rows=[];let row=[],cell='',quoted=false;src=String(src||'').replace(/^\uFEFF/,'');
+ for(let i=0;i<src.length;i++){
+  const c=src[i];
+  if(quoted){if(c==='"'&&src[i+1]==='"'){cell+='"';i++}else if(c==='"')quoted=false;else cell+=c}
+  else if(c==='"'){if(cell.trim())throw Error('Unexpected quote in an unquoted CSV field.');quoted=true}
+  else if(c===','){row.push(cell.trim());cell=''}
+  else if(c==='\n'||c==='\r'){if(c==='\r'&&src[i+1]==='\n')i++;row.push(cell.trim());if(row.some(x=>x))rows.push(row);row=[];cell=''}
+  else cell+=c;
+ }
+ if(quoted)throw Error('The CSV contains an unclosed quoted field.');
+ row.push(cell.trim());if(row.some(x=>x))rows.push(row);if(!rows.length)return [];
+ const headers=rows.shift().map(x=>x.toLowerCase().replace(/[ _-]+/g,'')),ix=names=>headers.findIndex(x=>names.includes(x));
+ const dateCol=ix(['date','transactiondate','valuedate']),descCol=ix(['description','narration','details','merchant','name','particulars']);
+ const amountCol=ix(['amount','transactionamount','value']),debitCol=ix(['debit','debitamount','withdrawal','withdrawalamount','withdrawn','withdrawnamount','dramount']),creditCol=ix(['credit','creditamount','deposit','depositamount','deposited','cramount']),typeCol=ix(['type','transactiontype','drcr']);
+ if(dateCol<0||descCol<0)throw Error('CSV needs date and description/narration columns.');
+ if(amountCol<0&&debitCol<0&&creditCol<0)throw Error('CSV needs an amount, debit or credit column.');
+ const parseAmount=raw=>{let value=String(raw??'').trim();if(!value)return NaN;const negative=/^\(.*\)$/.test(value);value=value.replace(/[₹$,\s()]/g,'');const n=Number(value);return Number.isFinite(n)?(negative?-Math.abs(n):n):NaN};
+ return rows.map((r,i)=>{
+  let amount=NaN,type='expense';
+  if(debitCol>=0||creditCol>=0){
+   const debit=debitCol>=0?parseAmount(r[debitCol]):NaN,credit=creditCol>=0?parseAmount(r[creditCol]):NaN,hasDebit=Number.isFinite(debit)&&debit!==0,hasCredit=Number.isFinite(credit)&&credit!==0;
+   if(hasDebit!==hasCredit){amount=Math.abs(hasDebit?debit:credit);type=hasDebit?'expense':'income'}
+  }else{
+   const raw=parseAmount(r[amountCol]);amount=Math.abs(raw);
+   if(typeCol>=0){const rawType=String(r[typeCol]||'').toLowerCase().trim();if(['cr','credit','deposit','income','received'].includes(rawType))type='income';else if(['dr','debit','withdrawal','expense','payment','paid'].includes(rawType))type='expense';else amount=NaN}
+  }
+  const date=studioDate(r[dateCol]),description=String(r[descCol]||'').trim()||'Imported transaction',category=String(r[ix(['category'])]||'').trim()||studioGuessCategory(description,type);
+  return {line:i+2,date,description,amount,type,category,valid:!!date&&Number.isFinite(amount)&&amount>0};
+ });
+}
  const rows=[];let row=[],cell='',q=false;src=String(src||'').replace(/^\uFEFF/,'');
  for(let i=0;i<src.length;i++){const c=src[i];if(c==='"'&&q&&src[i+1]==='"'){cell+='"';i++}else if(c==='"')q=!q;else if(c===','&&!q){row.push(cell.trim());cell=''}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&src[i+1]==='\n')i++;row.push(cell.trim());if(row.some(x=>x))rows.push(row);row=[];cell=''}else cell+=c}
  row.push(cell.trim());if(row.some(x=>x))rows.push(row);if(!rows.length)return [];
  const h=rows.shift().map(x=>x.toLowerCase().replace(/[ _-]+/g,'')),ix=a=>h.findIndex(x=>a.includes(x)),col={date:ix(['date','transactiondate','valuedate']),desc:ix(['description','narration','details','merchant','name','particulars']),amount:ix(['amount','debit','credit','withdrawal','deposit']),type:ix(['type','transactiontype','drcr']),category:ix(['category'])};
  return rows.map((r,i)=>{const raw=r[col.amount]||'',num=Number(String(raw).replace(/[₹$,]/g,'').replace(/\s/g,''));let type=String(r[col.type]||'').toLowerCase();type=['cr','credit','deposit','income'].includes(type)?'income':'expense';const date=studioDate(r[col.date]),description=r[col.desc]||'Imported transaction';return {line:i+2,date,description,amount:Math.abs(num),type,category:(r[col.category]||'').trim()||studioGuessCategory(description,type),valid:!!date&&Number.isFinite(num)&&num!==0}})
 }
-function previewStudioCSV(){studioCsvRows=studioParseCSV(document.getElementById('studioCsv').value);const good=studioCsvRows.filter(x=>x.valid).length;document.getElementById('studioCsvPreview').innerHTML=studioCsvRows.length?'<b>'+good+' valid, '+(studioCsvRows.length-good)+' invalid row(s).</b><div class="tablewrap"><table><thead><tr><th>Row</th><th>Date</th><th>Description</th><th>Type</th><th>Amount</th></tr></thead><tbody>'+studioCsvRows.slice(0,30).map(x=>'<tr><td>'+x.line+'</td><td>'+esc(x.date||'Invalid')+'</td><td>'+esc(x.description)+'</td><td>'+x.type+'</td><td>'+x.amount+'</td></tr>').join('')+'</tbody></table></div>':'No usable CSV rows found.'}
-function importStudioCSV(){if(!studioCsvRows.length)previewStudioCSV();const account=document.getElementById('studioImportAccount').value;if(!account)return alert('Add and select a destination account first.');const valid=studioCsvRows.filter(x=>x.valid);if(!valid.length)return alert('There are no valid rows.');let added=0,dupes=0;valid.forEach(x=>{if(data.transactions.some(t=>t.date===x.date&&Number(t.amount)===x.amount&&String(t.description||'').trim().toLowerCase()===x.description.trim().toLowerCase()&&t.type===x.type&&t.account===account&&t.currency===(data.accounts.find(a=>a.id===account)?.currency||data.settings.base))){dupes++;return}data.transactions.unshift({id:uid(),date:x.date,description:x.description,amount:x.amount,type:x.type,category:x.category,account,currency:data.accounts.find(a=>a.id===account)?.currency||data.settings.base,member:data.members[0]?.name||'',note:'Imported from CSV'});added++});if(!added)return alert('All valid rows appear to be duplicates.');if(!save())return;studioCsvRows=[];document.getElementById('studioCsv').value='';alert('Imported '+added+' transaction(s); skipped '+dupes+' possible duplicate(s).')}
+function previewStudioCSV(){
+ try{
+  studioCsvRows=studioParseCSV(document.getElementById('studioCsv').value);
+  const good=studioCsvRows.filter(x=>x.valid).length;
+  document.getElementById('studioCsvPreview').innerHTML=studioCsvRows.length?'<b>'+good+' valid, '+(studioCsvRows.length-good)+' invalid row(s).</b><div class="tablewrap"><table><thead><tr><th>Row</th><th>Date</th><th>Description</th><th>Type</th><th>Amount</th></tr></thead><tbody>'+studioCsvRows.slice(0,30).map(x=>'<tr><td>'+x.line+'</td><td>'+esc(x.date||'Invalid')+'</td><td>'+esc(x.description)+'</td><td>'+x.type+'</td><td>'+x.amount+'</td></tr>').join('')+'</tbody></table></div>':'No usable CSV rows found.';
+ }catch(error){studioCsvRows=[];document.getElementById('studioCsvPreview').textContent='CSV could not be parsed: '+error.message}
+}
+function importStudioCSV(){
+ if(!studioCsvRows.length){previewStudioCSV();if(!studioCsvRows.length)return}
+ const account=document.getElementById('studioImportAccount').value;if(!account)return alert('Add and select a destination account first.');
+ const valid=studioCsvRows.filter(x=>x.valid);if(!valid.length)return alert('There are no valid rows.');
+ const currency=data.accounts.find(a=>a.id===account)?.currency||data.settings.base;
+ const keyOf=t=>JSON.stringify([t.date,Number(t.amount),String(t.description||'').trim().toLowerCase(),t.type,t.account,t.currency]);
+ const seen=new Set(data.transactions.map(keyOf));let added=0,dupes=0;
+ valid.forEach(x=>{const row={id:uid(),date:x.date,description:x.description,amount:x.amount,type:x.type,category:x.category,account,currency,member:data.members[0]?.name||'',note:'Imported from CSV'},key=keyOf(row);if(seen.has(key)){dupes++;return}seen.add(key);data.transactions.unshift(row);added++});
+ if(!added)return alert('All valid rows appear to be duplicates.');
+ if(!save())return;studioCsvRows=[];document.getElementById('studioCsv').value='';alert('Imported '+added+' transaction(s); skipped '+dupes+' possible duplicate(s).');
+}
 function openStudioSubscription(id){const old=(data.subscriptions||[]).find(x=>x.id===id)||{name:'',amount:'',currency:data.settings.base,frequency:'monthly',nextDate:today()};modal(id?'Edit subscription':'Add subscription','<form id="studioSubForm"><div class="field"><label>Name</label><input name="name" required maxlength="70" value="'+esc(old.name)+'"></div><div class="formgrid"><div class="field"><label>Amount</label><input name="amount" type="number" min=".01" step=".01" required value="'+esc(old.amount)+'"></div><div class="field"><label>Currency</label><select name="currency">'+currencyOptions(old.currency)+'</select></div><div class="field"><label>Frequency</label><select name="frequency">'+options(['weekly','monthly','quarterly','yearly'],old.frequency)+'</select></div><div class="field"><label>Next renewal</label><input name="nextDate" type="date" required value="'+esc(old.nextDate)+'"></div></div><button class="btn primary">Save</button></form>');document.getElementById('studioSubForm').onsubmit=e=>{e.preventDefault();const v=Object.fromEntries(new FormData(e.target));v.amount=Number(v.amount);if(id)Object.assign(old,v);else data.subscriptions.push({...v,id:uid()});if(!save())return;closeModal()}}
 function deleteStudioSubscription(id){if(!confirm('Remove this subscription tracker entry?'))return;data.subscriptions=data.subscriptions.filter(x=>x.id!==id);save()}
 function openStudioPlan(id){const old=(data.plans||[]).find(x=>x.id===id)||{name:'',target:'',saved:'',currency:data.settings.base,dueDate:''};modal(id?'Edit plan':'Add financial plan','<form id="studioPlanForm"><div class="field"><label>Plan name</label><input name="name" required maxlength="70" value="'+esc(old.name)+'"></div><div class="formgrid"><div class="field"><label>Target</label><input name="target" type="number" min=".01" step=".01" required value="'+esc(old.target)+'"></div><div class="field"><label>Saved so far</label><input name="saved" type="number" min="0" step=".01" value="'+esc(old.saved)+'"></div><div class="field"><label>Currency</label><select name="currency">'+currencyOptions(old.currency)+'</select></div><div class="field"><label>Target date</label><input name="dueDate" type="date" value="'+esc(old.dueDate)+'"></div></div><button class="btn primary">Save plan</button></form>');document.getElementById('studioPlanForm').onsubmit=e=>{e.preventDefault();const v=Object.fromEntries(new FormData(e.target));v.target=Number(v.target);v.saved=Number(v.saved)||0;if(id)Object.assign(old,v);else data.plans.push({...v,id:uid()});if(!save())return;closeModal()}}
