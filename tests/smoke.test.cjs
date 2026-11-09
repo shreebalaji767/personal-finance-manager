@@ -91,7 +91,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v30/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v31/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -107,7 +107,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v30/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v31/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
@@ -214,3 +214,48 @@ assert.ok(appScript.includes('<select name="account" required>'), 'Transaction a
 assert.ok(appScript.includes("let hasPin=false,unlocked=false;try{hasPin=!!localStorage.getItem(PIN_KEY)"), 'PIN startup checks must not crash when browser storage is blocked');
 assert.ok(appScript.includes("try{localStorage.setItem(THEME_KEY"), 'Theme changes must handle storage failures');
 assert.ok(appScript.includes("try{if(!crypto.subtle)throw Error('Web Crypto is unavailable in this browser.')"), 'PIN controls must report unsupported Web Crypto instead of failing silently');
+
+
+// Service-worker offline paths must always resolve with a Response, never reject.
+assert.match(worker, /function offlineResponse\\(request\\)/, 'Offline fetches must have a controlled fallback response');
+assert.match(worker, /catch\\(networkError\\)[\\s\\S]*?return cached \\|\\| offlineResponse\\(request\\)/, 'Navigation failures must fall back to the cached app shell');
+assert.match(worker, /utm_\\[a-z0-9_\\]\\+/, 'Tracking query parameters must not fragment static asset cache keys');
+assert.match(worker, /return cached \\|\\| offlineResponse\\(request\\)/, 'Missing offline assets must return a controlled response');
+
+async function verifyServiceWorkerOfflineFallbacks() {
+  const listeners = {};
+  const cacheLookups = [];
+  const sandbox = {
+    self: {
+      location: { origin: 'https://example.test' },
+      registration: { scope: 'https://example.test/app/' },
+      addEventListener: (name, handler) => { listeners[name] = handler; },
+      skipWaiting: async () => {},
+      clients: { claim: async () => {} }
+    },
+    caches: {
+      match: async key => { cacheLookups.push(typeof key === 'string' ? key : key.url); return undefined; },
+      open: async () => ({ put: async () => {} }),
+      keys: async () => []
+    },
+    fetch: async () => { throw new Error('simulated offline network'); },
+    Request, URL, Response
+  };
+  vm.runInNewContext(worker, sandbox);
+  const navEvent = { request: { url: 'https://example.test/app/?utm_source=chatgpt.com', method: 'GET', mode: 'navigate' }, respondWith(promise) { this.response = promise; } };
+  listeners.fetch(navEvent);
+  const navResponse = await navEvent.response;
+  assert.equal(navResponse.status, 503, 'Offline navigation without a cached shell must resolve with a 503 fallback');
+  assert.match(await navResponse.text(), /Ledger is offline/, 'Offline navigation fallback must explain how to recover');
+
+  const assetEvent = { request: { url: 'https://example.test/app/icon.svg?utm_source=chatgpt.com', method: 'GET', mode: 'same-origin', credentials: 'same-origin' }, respondWith(promise) { this.response = promise; } };
+  listeners.fetch(assetEvent);
+  const assetResponse = await assetEvent.response;
+  assert.equal(assetResponse.status, 503, 'Missing offline assets must resolve with a controlled 503 response');
+  assert.ok(cacheLookups.some(url => url === 'https://example.test/app/icon.svg'), 'Tracking parameters must be removed from static cache keys');
+}
+
+verifyServiceWorkerOfflineFallbacks().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
