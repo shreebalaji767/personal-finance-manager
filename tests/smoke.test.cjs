@@ -197,3 +197,8 @@ assert.equal(bankRows[1].type, 'income', 'Separate credit columns must become in
 assert.equal(bankRows[1].amount, 50000, 'Credit amounts must be parsed correctly');
 assert.throws(() => parseCSV('date,description,amount,type\n2026-11-01,"unfinished,12,expense'), /unclosed quoted field/i, 'Malformed quoted CSV must be rejected');
 assert.ok(appScript.includes("const seen=new Set(data.transactions.map(keyOf))"), 'CSV import must detect duplicates within the same file as well as existing records');
+
+assert.match(appScript, /if\\(!save\\(\\)\\)return;alert\\('Updated /, 'Bulk categorisation must not claim success when storage fails');
+assert.match(appScript, /if\\(!save\\(\\)\\)return;alert\\('Transaction split/, 'Transaction splitting must not claim success when storage fails');
+assert.match(appScript, /if\\(!save\\(\\)\\)return;alert\\('Statement balance saved/, 'Reconciliation must not claim success when storage fails');
+assert.match(appScript, /data\\.members\\.some\\(m=>m\\.name\\.toLowerCase\\(\\)===v\\.name\\.toLowerCase\\(\\)\\)/, 'Family member names must be unique ignoring case');
