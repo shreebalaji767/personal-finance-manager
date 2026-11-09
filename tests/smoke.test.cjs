@@ -90,7 +90,7 @@ assert.match(html, /data-page="studio"/, 'Finance Studio navigation must exist')
 assert.match(html, /id="page-studio"/, 'Finance Studio page must exist');
 for (const collection of ['subscriptions','customCategories','plans']) assert.ok(seedMatch[1].includes(collection + ':[]'), 'New collection must start empty: ' + collection);
 for (const fn of ['previewStudioCSV','importStudioCSV','renderFinanceStudio','openStudioSubscription','openStudioPlan','exportStudioCSV']) assert.ok(appScript.includes('function ' + fn + '('), 'Missing Finance Studio feature: ' + fn);
-assert.match(worker, /ledger-static-v23/, 'Finance Studio and planning assets must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v24/, 'Finance Studio and planning assets must use a refreshed offline cache');
 assert.match(html, /class="sidebar-scrim" id="sidebarScrim"/, 'Mobile navigation must have a dismissible backdrop');
 assert.match(html, /aria-controls="sidebar" aria-expanded="false"/, 'Mobile navigation toggle must expose its state accessibly');
 assert.match(html, /function closeSidebar\(/, 'Sidebar must have a shared close handler');
@@ -106,7 +106,7 @@ for (const fn of ['renderPlanningTools','openPlanningTemplate','usePlanningTempl
 assert.match(appScript, /function calculatePlanningInvest\(/, 'Investment projection calculator must exist');
 assert.match(appScript, /function calculatePlanningLoan\(/, 'Loan prepayment calculator must exist');
 assert.match(appScript, /function renderPlanningBillReminders\(/, 'Bill reminder list must exist');
-assert.match(worker, /ledger-static-v23/, 'Planning tools must use a refreshed offline cache');
+assert.match(worker, /ledger-static-v24/, 'Planning tools must use a refreshed offline cache');
 assert.match(html, /name="rollover"/, 'Budgets must support optional rollover');
 assert.match(html, /id="planningReconciliation"/, 'Account reconciliation history must exist');
 assert.match(html, /id="planningStorage"/, 'Local storage monitor must exist');
@@ -120,3 +120,12 @@ assert.ok(!html.includes('<script src="./tutorial-scene.js"></script>'), 'The re
 assert.match(threeScene, /prefers-reduced-motion/ , 'The 3D scene must respect reduced motion');
 assert.match(threeScene, /IntersectionObserver/, 'The 3D scene must pause outside the viewport');
 assert.doesNotMatch(threeScene, /https?:\/\//, 'The 3D scene must not depend on a runtime CDN');
+
+// Data-integrity regression guards.
+assert.match(appScript, /const safeId=v=>typeof v==='string'/, 'Imported IDs must be restricted to a safe character set');
+assert.match(appScript, /const validDate=v=>/, 'Imported dates must be validated');
+assert.match(appScript, /if\(!save\(\)\)return;alert\('Backup imported successfully\.'\)/, 'Import must not report success when persistence fails');
+assert.match(appScript, /normaliseData\(JSON\.parse\(target\.data\)\)/, 'Recovery snapshots must be validated before restore');
+assert.match(appScript, /const v=convert\(t\.amount,t\.currency\)/, 'Calendar totals must convert transaction currencies');
+assert.match(appScript, /t\.account===account&&t\.currency===/, 'CSV duplicate checks must include account and currency');
+assert.doesNotMatch(html.slice(0, html.indexOf('<body')), /blssnvj21/, 'Metadata must use Ledger branding');
