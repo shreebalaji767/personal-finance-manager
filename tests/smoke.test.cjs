@@ -196,4 +196,4 @@ assert.equal(bankRows[0].amount, 1200, 'Debit amounts must be parsed correctly')
 assert.equal(bankRows[1].type, 'income', 'Separate credit columns must become income');
 assert.equal(bankRows[1].amount, 50000, 'Credit amounts must be parsed correctly');
 assert.throws(() => parseCSV('date,description,amount,type\n2026-11-01,"unfinished,12,expense'), /unclosed quoted field/i, 'Malformed quoted CSV must be rejected');
-assert.match(appScript, /const seen=new Set\\(data\\.transactions\\.map\\(keyOf\\)\\)/, 'CSV import must detect duplicates within the same file as well as existing records');
+assert.ok(appScript.includes("const seen=new Set(data.transactions.map(keyOf))"), 'CSV import must detect duplicates within the same file as well as existing records');
